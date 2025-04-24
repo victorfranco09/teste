@@ -358,7 +358,8 @@
             if (herdeiro && typeof herdeiro === "object" && herdeiro.hasOwnProperty("nome")) {
               const herdeiroNome = herdeiro.nome;
               const herdeiroFlag = (herdeiro.assinou && herdeiro.assinou.toLowerCase() === "sim") ? "✍️" : "📄";
-              liHerdeiro.innerHTML = `${herdeiroNome} ${herdeiroFlag}`;
+              const contatoFlag = (herdeiro.contato && herdeiro.contato.toLowerCase() === "sim") ? "🗣️ " : "";
+              liHerdeiro.innerHTML = `${contatoFlag}${herdeiroNome} ${herdeiroFlag}`;
             } else if (typeof herdeiro === "string") {
               liHerdeiro.innerHTML = herdeiro;
             }
