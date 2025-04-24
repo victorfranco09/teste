@@ -460,22 +460,6 @@
           lpLabel.appendChild(lpSelect);
           additionalContainer.appendChild(lpLabel);
 
-          const interesseLabel = document.createElement("label");
-          interesseLabel.textContent = "Interesse: ";
-          const interesseSelect = document.createElement("select");
-          interesseSelect.className = "parte-interesse";
-          const intSim = document.createElement("option");
-          intSim.value = "sim";
-          intSim.textContent = "Sim";
-          const intNao = document.createElement("option");
-          intNao.value = "não";
-          intNao.textContent = "Não";
-          interesseSelect.appendChild(intSim);
-          interesseSelect.appendChild(intNao);
-          interesseSelect.value = (parte.interesse) ? parte.interesse.toLowerCase() : "não";
-          interesseLabel.appendChild(interesseSelect);
-          additionalContainer.appendChild(interesseLabel);
-
           
           const acordoContainer = document.createElement("div");
           acordoContainer.id = "acordo-container";
@@ -567,6 +551,17 @@ function addHerdeiroRow(value = "", assinou = "não", contato = "não") {
   contatoLabel.prepend(contatoCheckbox);
   row.appendChild(contatoLabel);
 
+  // → Novo checkbox “Interesse?”
+  const interesseCheckbox = document.createElement("input");
+  interesseCheckbox.type = "checkbox";
+  interesseCheckbox.className = "herdeiro-interesse";
+  interesseCheckbox.checked = (interesse === "sim");
+  const interesseLabel = document.createElement("label");
+  interesseLabel.textContent = " Interesse?";
+  interesseLabel.prepend(interesseCheckbox);
+  row.appendChild(interesseLabel);
+
+
   // (já existente) botão de remover
   if (herdeirosList.children.length > 0) {
     const removeBtn = document.createElement("button");
@@ -612,22 +607,6 @@ function addHerdeiroRow(value = "", assinou = "não", contato = "não") {
           lpLabel.appendChild(lpSelect);
           additionalContainer.appendChild(lpLabel);
 
-          const interesseLabel = document.createElement("label");
-          interesseLabel.textContent = "Interesse: ";
-          const interesseSelect = document.createElement("select");
-          interesseSelect.className = "parte-interesse";
-          const intSim = document.createElement("option");
-          intSim.value = "sim";
-          intSim.textContent = "Sim";
-          const intNao = document.createElement("option");
-          intNao.value = "não";
-          intNao.textContent = "Não";
-          interesseSelect.appendChild(intSim);
-          interesseSelect.appendChild(intNao);
-          interesseSelect.value = (parte.interesse) ? parte.interesse.toLowerCase() : "não";
-          interesseLabel.appendChild(interesseSelect);
-          additionalContainer.appendChild(interesseLabel);
-
           additionalContainer.appendChild(herdeirosContainer);
         }
       }
@@ -666,7 +645,8 @@ herdeirosRows.forEach(row => {
   const nome = row.querySelector(".herdeiro-name").value.trim();
   const assinou = row.querySelector(".herdeiro-assinou").checked ? "sim" : "não";
   const contato = row.querySelector(".herdeiro-contato").checked ? "sim" : "não";
-  if (nome) herdeirosArray.push({ nome, assinou, contato });
+  const interesse = row.querySelector(".herdeiro-interesse").checked ? "sim" : "não";
+  if (nome) herdeirosArray.push({ nome, assinou, contato, interesse });
 });
 updatedPart.herdeiros = herdeirosArray;
           // Bloco duplicado removido para corrigir declaração duplicada de herdeirosRows
