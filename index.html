@@ -475,6 +475,18 @@
         } else if (statusValue === "falecido") {
           const herdeirosContainer = document.createElement("div");
           herdeirosContainer.id = "herdeiros-container";
+  // → Novo campo: Número de herdeiros (máx. 2 dígitos)
+  const numHLabel = document.createElement("label");
+  numHLabel.textContent = "Nº de herdeiros: ";
+  const numHInput = document.createElement("input");
+  numHInput.type = "number";
+  numHInput.id = "num-herdeiros";
+  numHInput.min = 0;
+  numHInput.max = 99;
+  numHInput.value = Array.isArray(parte.herdeiros) ? parte.herdeiros.length : 0;
+  numHInput.style.width = "40px";
+  numHLabel.appendChild(numHInput);
+  herdeirosContainer.appendChild(numHLabel);
           const herdeirosLabel = document.createElement("label");
           herdeirosLabel.textContent = "Herdeiros:";
           herdeirosContainer.appendChild(herdeirosLabel);
@@ -491,33 +503,48 @@
             herdeirosData = [""];
           }
           
-          function addHerdeiroRow(value = "", assinou = "não") {
-            const row = document.createElement("div");
-            row.className = "herdeiro-row";
-            const input = document.createElement("input");
-            input.type = "text";
-            input.className = "herdeiro-name";
-            input.value = value;
-            const assinouCheckbox = document.createElement("input");
-            assinouCheckbox.type = "checkbox";
-            assinouCheckbox.className = "herdeiro-assinou";
-            assinouCheckbox.checked = (assinou === "sim");
-            const checkboxLabel = document.createElement("label");
-            checkboxLabel.textContent = "Assinou?";
-            checkboxLabel.prepend(assinouCheckbox);
-            row.appendChild(input);
-            row.appendChild(checkboxLabel);
-            if (herdeirosList.children.length > 0) {
-              const removeBtn = document.createElement("button");
-              removeBtn.type = "button";
-              removeBtn.textContent = "−";
-              removeBtn.addEventListener("click", function() {
-                herdeirosList.removeChild(row);
-              });
-              row.appendChild(removeBtn);
-            }
-            herdeirosList.appendChild(row);
-          }
+function addHerdeiroRow(value = "", assinou = "não", contato = "não") {
+  const row = document.createElement("div");
+  row.className = "herdeiro-row";
+
+  // (já existente) input para nome
+  const input = document.createElement("input");
+  input.type = "text";
+  input.className = "herdeiro-name";
+  input.value = value;
+  row.appendChild(input);
+
+  // (já existente) checkbox “Assinou?”
+  const assinouCheckbox = document.createElement("input");
+  assinouCheckbox.type = "checkbox";
+  assinouCheckbox.className = "herdeiro-assinou";
+  assinouCheckbox.checked = (assinou === "sim");
+  const assinouLabel = document.createElement("label");
+  assinouLabel.textContent = " Assinou?";
+  assinouLabel.prepend(assinouCheckbox);
+  row.appendChild(assinouLabel);
+
+  // → Novo checkbox “Contato?”
+  const contatoCheckbox = document.createElement("input");
+  contatoCheckbox.type = "checkbox";
+  contatoCheckbox.className = "herdeiro-contato";
+  contatoCheckbox.checked = (contato === "sim");
+  const contatoLabel = document.createElement("label");
+  contatoLabel.textContent = " Contato?";
+  contatoLabel.prepend(contatoCheckbox);
+  row.appendChild(contatoLabel);
+
+  // (já existente) botão de remover
+  if (herdeirosList.children.length > 0) {
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.textContent = "−";
+    removeBtn.addEventListener("click", () => herdeirosList.removeChild(row));
+    row.appendChild(removeBtn);
+  }
+
+  herdeirosList.appendChild(row);
+}
           
           herdeirosData.forEach(function(item) {
             if (typeof item === "object") {
@@ -563,6 +590,19 @@
           }
           updatedPart.herdeiros = [];
         } else if (newStatus === "falecido") {
+// lê número de herdeiros
+updatedPart.numHerdeiros = parseInt(document.getElementById("num-herdeiros").value, 10) || 0;
+
+// reconstrói a lista de herdeiros, agora incluindo “contato”
+const herdeirosRows = parteDetailsContainer.querySelectorAll(".herdeiro-row");
+const herdeirosArray = [];
+herdeirosRows.forEach(row => {
+  const nome = row.querySelector(".herdeiro-name").value.trim();
+  const assinou = row.querySelector(".herdeiro-assinou").checked ? "sim" : "não";
+  const contato = row.querySelector(".herdeiro-contato").checked ? "sim" : "não";
+  if (nome) herdeirosArray.push({ nome, assinou, contato });
+});
+updatedPart.herdeiros = herdeirosArray;
           const herdeirosRows = parteDetailsContainer.querySelectorAll(".herdeiro-row");
           let herdeirosArray = [];
           herdeirosRows.forEach(row => {
