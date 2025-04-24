@@ -548,9 +548,9 @@ function addHerdeiroRow(value = "", assinou = "não", contato = "não") {
           
           herdeirosData.forEach(function(item) {
             if (typeof item === "object") {
-              addHerdeiroRow(item.nome || "", item.assinou || "não");
+              addHerdeiroRow(item.nome || "", item.assinou || "não", item.contato || "não");
             } else {
-              addHerdeiroRow(item, "não");
+              addHerdeiroRow(item, "não", "não");
             }
           });
           
@@ -558,7 +558,7 @@ function addHerdeiroRow(value = "", assinou = "não", contato = "não") {
           addBtn.type = "button";
           addBtn.textContent = "+";
           addBtn.addEventListener("click", function() {
-            addHerdeiroRow("", "não");
+            addHerdeiroRow("", "não", "não");
           });
           herdeirosContainer.appendChild(addBtn);
           
@@ -603,19 +603,7 @@ herdeirosRows.forEach(row => {
   if (nome) herdeirosArray.push({ nome, assinou, contato });
 });
 updatedPart.herdeiros = herdeirosArray;
-          const herdeirosRows = parteDetailsContainer.querySelectorAll(".herdeiro-row");
-          let herdeirosArray = [];
-          herdeirosRows.forEach(row => {
-            const nameInput = row.querySelector(".herdeiro-name");
-            const checkbox = row.querySelector(".herdeiro-assinou");
-            if (nameInput && nameInput.value.trim() !== "") {
-              herdeirosArray.push({
-                nome: nameInput.value.trim(),
-                assinou: checkbox.checked ? "sim" : "não"
-              });
-            }
-          });
-          updatedPart.herdeiros = herdeirosArray;
+          // Bloco duplicado removido para corrigir declaração duplicada de herdeirosRows
           updatedPart.telefone = "";
           updatedPart.email = "";
           updatedPart.contato = "";
