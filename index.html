@@ -444,6 +444,38 @@
           contatoSelect.value = initialContato;
           contatoLabel.appendChild(contatoSelect);
           additionalContainer.appendChild(contatoLabel);
+          const lpLabel = document.createElement("label");
+          lpLabel.textContent = "LP: ";
+          const lpSelect = document.createElement("select");
+          lpSelect.className = "parte-lp";
+          const lpSim = document.createElement("option");
+          lpSim.value = "sim";
+          lpSim.textContent = "Sim";
+          const lpNao = document.createElement("option");
+          lpNao.value = "não";
+          lpNao.textContent = "Não";
+          lpSelect.appendChild(lpSim);
+          lpSelect.appendChild(lpNao);
+          lpSelect.value = (parte.lp) ? parte.lp.toLowerCase() : "não";
+          lpLabel.appendChild(lpSelect);
+          additionalContainer.appendChild(lpLabel);
+
+          const interesseLabel = document.createElement("label");
+          interesseLabel.textContent = "Interesse: ";
+          const interesseSelect = document.createElement("select");
+          interesseSelect.className = "parte-interesse";
+          const intSim = document.createElement("option");
+          intSim.value = "sim";
+          intSim.textContent = "Sim";
+          const intNao = document.createElement("option");
+          intNao.value = "não";
+          intNao.textContent = "Não";
+          interesseSelect.appendChild(intSim);
+          interesseSelect.appendChild(intNao);
+          interesseSelect.value = (parte.interesse) ? parte.interesse.toLowerCase() : "não";
+          interesseLabel.appendChild(interesseSelect);
+          additionalContainer.appendChild(interesseLabel);
+
           
           const acordoContainer = document.createElement("div");
           acordoContainer.id = "acordo-container";
@@ -563,6 +595,39 @@ function addHerdeiroRow(value = "", assinou = "não", contato = "não") {
           });
           herdeirosContainer.appendChild(addBtn);
           
+          
+          const lpLabel = document.createElement("label");
+          lpLabel.textContent = "LP: ";
+          const lpSelect = document.createElement("select");
+          lpSelect.className = "parte-lp";
+          const lpSim = document.createElement("option");
+          lpSim.value = "sim";
+          lpSim.textContent = "Sim";
+          const lpNao = document.createElement("option");
+          lpNao.value = "não";
+          lpNao.textContent = "Não";
+          lpSelect.appendChild(lpSim);
+          lpSelect.appendChild(lpNao);
+          lpSelect.value = (parte.lp) ? parte.lp.toLowerCase() : "não";
+          lpLabel.appendChild(lpSelect);
+          additionalContainer.appendChild(lpLabel);
+
+          const interesseLabel = document.createElement("label");
+          interesseLabel.textContent = "Interesse: ";
+          const interesseSelect = document.createElement("select");
+          interesseSelect.className = "parte-interesse";
+          const intSim = document.createElement("option");
+          intSim.value = "sim";
+          intSim.textContent = "Sim";
+          const intNao = document.createElement("option");
+          intNao.value = "não";
+          intNao.textContent = "Não";
+          interesseSelect.appendChild(intSim);
+          interesseSelect.appendChild(intNao);
+          interesseSelect.value = (parte.interesse) ? parte.interesse.toLowerCase() : "não";
+          interesseLabel.appendChild(interesseSelect);
+          additionalContainer.appendChild(interesseLabel);
+
           additionalContainer.appendChild(herdeirosContainer);
         }
       }
