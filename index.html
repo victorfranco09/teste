@@ -306,12 +306,35 @@
 
         // Caso a parte seja um objeto com a propriedade "nome"
         if (parte && typeof parte === "object" && parte.hasOwnProperty("nome")) {
+          if (parte && typeof parte === "object" && parte.hasOwnProperty("nome")) {
+          if (parte && typeof parte === "object" && parte.hasOwnProperty("nome")) {
           const status = parte.status ? parte.status.toLowerCase() : "";
-          if (status === "falecido" || status === "morto") {
-            nomeDisplay = `<span style="color: red;">${parte.nome}</span>`;
-          } else if (status === "vivo") {
-            nomeDisplay = `<span style="color: blue;">${parte.nome}</span>`;
-            if (parte.assinou && parte.assinou.toLowerCase() === "sim") {
+          const interesse = parte.interesse && parte.interesse.toLowerCase() === "sim";
+          let nomeDisplay = "";
+          let flagsHTML = "";
+
+          if (!interesse) {
+            nomeDisplay = `<span style="color: #555; font-weight: 600;">${parte.nome}</span>`;
+          } else {
+            if (status === "falecido" || status === "morto") {
+              nomeDisplay = `<span style="color: red; font-weight: 600;">${parte.nome}</span>`;
+            } else if (status === "vivo") {
+              nomeDisplay = `<span style="color: blue; font-weight: 600;">${parte.nome}</span>`;
+              if (parte.assinou && parte.assinou.toLowerCase() === "sim") {
+                flagsHTML = `<span class="flag flag-acordo">✍️</span>`;
+              } else {
+                const contatoFlag = (parte.contato && parte.contato.toLowerCase() === "sim")
+                                    ? `<span class="flag flag-contato">🗣️</span>`
+                                    : `<span class="flag flag-contato">📞</span>`;
+                const acordoFlag = `<span class="flag flag-acordo">📄</span>`;
+                flagsHTML = `${contatoFlag} ${acordoFlag}`;
+              }
+            } else {
+              nomeDisplay = `<span style="font-weight: 600;">${parte.nome}</span>`;
+            }
+          }          } else {
+            nomeDisplay = `<span style="font-weight: 600;">${parte.nome}</span>`;
+          }            if (parte.assinou && parte.assinou.toLowerCase() === "sim") {
               flagsHTML = `<span class="flag flag-acordo">✍️</span>`;
             } else {
               const contatoFlag = (parte.contato && parte.contato.toLowerCase() === "sim")
@@ -365,8 +388,7 @@
               if (assinou) {
                 emojis = "✍️";
               } else {
-                emojis += "📄";
-                if (contato) emojis += " 🗣️";
+                                if (contato) emojis += " 🗣️";
                 if (interesse) emojis += " 💬";
               }
 
@@ -471,6 +493,22 @@
           lpSelect.value = (parte.lp) ? parte.lp.toLowerCase() : "não";
           lpLabel.appendChild(lpSelect);
           additionalContainer.appendChild(lpLabel);
+          const interesseLabelParte = document.createElement("label");
+          interesseLabelParte.textContent = "Interesse: ";
+          const interesseSelectParte = document.createElement("select");
+          interesseSelectParte.className = "parte-interesse";
+          const intSim = document.createElement("option");
+          intSim.value = "sim";
+          intSim.textContent = "Sim";
+          const intNao = document.createElement("option");
+          intNao.value = "não";
+          intNao.textContent = "Não";
+          interesseSelectParte.appendChild(intSim);
+          interesseSelectParte.appendChild(intNao);
+          interesseSelectParte.value = (parte.interesse) ? parte.interesse.toLowerCase() : "não";
+          interesseLabelParte.appendChild(interesseSelectParte);
+          additionalContainer.appendChild(interesseLabelParte);
+
           const interesseLabel = document.createElement("label");
           interesseLabel.textContent = "Interesse: ";
           const interesseSelect = document.createElement("select");
@@ -654,6 +692,22 @@ function addHerdeiroRow(value = "", assinou = "não", contato = "não", interess
           lpSelect.value = (parte.lp) ? parte.lp.toLowerCase() : "não";
           lpLabel.appendChild(lpSelect);
           additionalContainer.appendChild(lpLabel);
+          const interesseLabelParte = document.createElement("label");
+          interesseLabelParte.textContent = "Interesse: ";
+          const interesseSelectParte = document.createElement("select");
+          interesseSelectParte.className = "parte-interesse";
+          const intSim = document.createElement("option");
+          intSim.value = "sim";
+          intSim.textContent = "Sim";
+          const intNao = document.createElement("option");
+          intNao.value = "não";
+          intNao.textContent = "Não";
+          interesseSelectParte.appendChild(intSim);
+          interesseSelectParte.appendChild(intNao);
+          interesseSelectParte.value = (parte.interesse) ? parte.interesse.toLowerCase() : "não";
+          interesseLabelParte.appendChild(interesseSelectParte);
+          additionalContainer.appendChild(interesseLabelParte);
+
           const interesseLabel = document.createElement("label");
           interesseLabel.textContent = "Interesse: ";
           const interesseSelect = document.createElement("select");
