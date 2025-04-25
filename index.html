@@ -557,24 +557,38 @@ function addHerdeiroRow(value = "", assinou = "não", contato = "não", interess
   input.value = value;
   row.appendChild(input);
 
-  // (já existente) checkbox “Assinou?”
-  const assinouCheckbox = document.createElement("input");
-  assinouCheckbox.type = "checkbox";
-  assinouCheckbox.className = "herdeiro-assinou";
-  assinouCheckbox.checked = (assinou === "sim");
+  // (atualizado) select “Assinou?”
+  const assinouSelect = document.createElement("select");
+  assinouSelect.className = "herdeiro-assinou";
+  const asnSim = document.createElement("option");
+  asnSim.value = "sim";
+  asnSim.textContent = "Sim";
+  const asnNao = document.createElement("option");
+  asnNao.value = "não";
+  asnNao.textContent = "Não";
+  assinouSelect.appendChild(asnSim);
+  assinouSelect.appendChild(asnNao);
+  assinouSelect.value = assinou.toLowerCase();
   const assinouLabel = document.createElement("label");
   assinouLabel.textContent = " Assinou?";
-  assinouLabel.prepend(assinouCheckbox);
+  assinouLabel.appendChild(assinouSelect);
   row.appendChild(assinouLabel);
 
   // → Novo checkbox “Contato?”
-  const contatoCheckbox = document.createElement("input");
-  contatoCheckbox.type = "checkbox";
-  contatoCheckbox.className = "herdeiro-contato";
-  contatoCheckbox.checked = (contato === "sim");
+  const contatoSelect = document.createElement("select");
+  contatoSelect.className = "herdeiro-contato";
+  const ctSim = document.createElement("option");
+  ctSim.value = "sim";
+  ctSim.textContent = "Sim";
+  const ctNao = document.createElement("option");
+  ctNao.value = "não";
+  ctNao.textContent = "Não";
+  contatoSelect.appendChild(ctSim);
+  contatoSelect.appendChild(ctNao);
+  contatoSelect.value = contato.toLowerCase();
   const contatoLabel = document.createElement("label");
   contatoLabel.textContent = " Contato?";
-  contatoLabel.prepend(contatoCheckbox);
+  contatoLabel.appendChild(contatoSelect);
   row.appendChild(contatoLabel);
 
   // → Novo select “Interesse?”
@@ -691,8 +705,8 @@ const herdeirosRows = parteDetailsContainer.querySelectorAll(".herdeiro-row");
 const herdeirosArray = [];
 herdeirosRows.forEach(row => {
   const nome = row.querySelector(".herdeiro-name").value.trim();
-  const assinou = row.querySelector(".herdeiro-assinou").checked ? "sim" : "não";
-  const contato = row.querySelector(".herdeiro-contato").checked ? "sim" : "não";
+  const assinou = row.querySelector(".herdeiro-assinou")?.value || "não";
+  const contato = row.querySelector(".herdeiro-contato")?.value || "não";
   const interesse = row.querySelector(".herdeiro-interesse")?.value || "não";
   if (nome) herdeirosArray.push({ nome, assinou, contato, interesse });
 });
