@@ -297,108 +297,74 @@
     }
 
     // Renderiza “Partes” com formatação: 'vivo' em azul, 'falecido' ou 'morto' em vermelho e os demais sem alteração.
+    
     function carregarPartes(partes) {
       detPartesList.innerHTML = "";
       partes.forEach((parte, index) => {
         const li = document.createElement("li");
-        let nomeDisplay = parte.nome || "";
+
+        let nome = typeof parte === "object" ? parte.nome || "" : parte;
         let flagsHTML = "";
+        let nomeDisplay = nome;
+        let estilo = "font-weight: 600;";
 
-        // Caso a parte seja um objeto com a propriedade "nome"
-        if (parte && typeof parte === "object" && parte.hasOwnProperty("nome")) {
-          if (parte && typeof parte === "object" && parte.hasOwnProperty("nome")) {
-          if (parte && typeof parte === "object" && parte.hasOwnProperty("nome")) {
-          const status = parte.status ? parte.status.toLowerCase() : "";
-          const interesse = parte.interesse && parte.interesse.toLowerCase() === "sim";
-          let nomeDisplay = parte.nome || "";
-          let flagsHTML = "";
+        if (typeof parte === "object") {
+          const status = (parte.status || "").toLowerCase();
+          const interesse = (parte.interesse || "").toLowerCase() === "sim";
+          const contato = (parte.contato || "").toLowerCase() === "sim";
+          const assinou = (parte.assinou || "").toLowerCase() === "sim";
 
-          if (!interesse) {
-            nomeDisplay = `<span style="color: #555; font-weight: 600;">${parte.nome}</span>`;
-          } else {
+          if (interesse) {
             if (status === "falecido" || status === "morto") {
-              nomeDisplay = `<span style="color: red; font-weight: 600;">${parte.nome}</span>`;
+              estilo += "color: red;";
             } else if (status === "vivo") {
-              nomeDisplay = `<span style="color: blue; font-weight: 600;">${parte.nome}</span>`;
-              if (parte.assinou && parte.assinou.toLowerCase() === "sim") {
-                flagsHTML = `<span class="flag flag-acordo">✍️</span>`;
-              } else {
-                const contatoFlag = (parte.contato && parte.contato.toLowerCase() === "sim")
-                                    ? `<span class="flag flag-contato">🗣️</span>`
-                                    : `<span class="flag flag-contato">📞</span>`;
-                const acordoFlag = `<span class="flag flag-acordo">📄</span>`;
-                flagsHTML = `${contatoFlag} ${acordoFlag}`;
-              }
-            } else {
-              nomeDisplay = `<span style="font-weight: 600;">${parte.nome}</span>`;
-            }
-          }          } else {
-            nomeDisplay = `<span style="font-weight: 600;">${parte.nome}</span>`;
-          }            if (parte.assinou && parte.assinou.toLowerCase() === "sim") {
-              flagsHTML = `<span class="flag flag-acordo">✍️</span>`;
-            } else {
-              const contatoFlag = (parte.contato && parte.contato.toLowerCase() === "sim")
-                                  ? `<span class="flag flag-contato">🗣️</span>`
-                                  : `<span class="flag flag-contato">📞</span>`;
-              const acordoFlag = (parte.assinou && parte.assinou.toLowerCase() === "sim")
-                                  ? `<span class="flag flag-acordo">✍️</span>`
-                                  : `<span class="flag flag-acordo">📄</span>`;
-              flagsHTML = `${contatoFlag} ${acordoFlag}`;
+              estilo += "color: blue;";
             }
           } else {
-            nomeDisplay = parte.nome;
-            if (parte.assinou && parte.assinou.toLowerCase() === "sim") {
-              flagsHTML = `<span class="flag flag-acordo">✍️</span>`;
-            } else {
-              const contatoFlag = (parte.contato && parte.contato.toLowerCase() === "sim")
-                                  ? `<span class="flag flag-contato">🗣️</span>`
-                                  : `<span class="flag flag-contato">📞</span>`;
-              const acordoFlag = (parte.assinou && parte.assinou.toLowerCase() === "sim")
-                                  ? `<span class="flag flag-acordo">✍️</span>`
-                                  : `<span class="flag flag-acordo">📄</span>`;
-              flagsHTML = `${contatoFlag} ${acordoFlag}`;
-            }
+            estilo += "color: #555;";
           }
-        } else if (typeof parte === "string") {
-          nomeDisplay = parte;
+
+          if (assinou) {
+            flagsHTML = `<span class="flag flag-acordo">✍️</span>`;
+          } else {
+            const contatoFlag = contato ? `🗣️` : `📞`;
+            const acordoFlag = `📄`;
+            flagsHTML = `<span class="flag flag-contato">${contatoFlag}</span> <span class="flag flag-acordo">${acordoFlag}</span>`;
+          }
+
+          nomeDisplay = `<span style="${estilo}">${nome}</span>`;
         }
 
-        li.innerHTML = (nomeDisplay || parte.nome || "") + " " + flagsHTML;
+        li.innerHTML = nomeDisplay + " " + flagsHTML;
 
-        // Se for objeto com status "falecido"/"morto" e tiver herdeiros, adiciona uma lista aninhada
         if (
-          parte &&
           typeof parte === "object" &&
-          parte.hasOwnProperty("status") &&
-          (parte.status.toLowerCase() === "falecido" || parte.status.toLowerCase() === "morto") &&
+          (parte.status || "").toLowerCase() === "falecido" &&
           Array.isArray(parte.herdeiros) &&
           parte.herdeiros.length > 0
         ) {
           const herdeirosUL = document.createElement("ul");
           herdeirosUL.classList.add("herdeiros-list");
+
           parte.herdeiros.forEach(herdeiro => {
             const liHerdeiro = document.createElement("li");
-            if (herdeiro && typeof herdeiro === "object" && herdeiro.hasOwnProperty("nome")) {
-              const nome = herdeiro.nome;
-              const interesse = herdeiro.interesse && herdeiro.interesse.toLowerCase() === "sim";
-              const contato = herdeiro.contato && herdeiro.contato.toLowerCase() === "sim";
-              const assinou = herdeiro.assinou && herdeiro.assinou.toLowerCase() === "sim";
+            const nomeH = herdeiro.nome || herdeiro || "";
+            const interesseH = (herdeiro.interesse || "").toLowerCase() === "sim";
+            const contatoH = (herdeiro.contato || "").toLowerCase() === "sim";
+            const assinouH = (herdeiro.assinou || "").toLowerCase() === "sim";
 
-              let emojis = "";
-              if (assinou) {
-                emojis = "✍️";
-              } else {
-                                if (contato) emojis += " 🗣️";
-                if (interesse) emojis += " 💬";
-              }
-
-              const estilo = interesse ? "font-weight: bold;" : "font-weight: bold; color: #555;";
-              liHerdeiro.innerHTML = `<span style="${estilo}">${nome} ${emojis}</span>`;
-            } else if (typeof herdeiro === "string") {
-              liHerdeiro.innerHTML = herdeiro;
+            let emojis = "";
+            if (assinouH) emojis = "✍️";
+            else {
+              if (contatoH) emojis += " 🗣️";
+              if (interesseH) emojis += " 💬";
             }
+
+            const estiloH = interesseH ? "font-weight: bold;" : "font-weight: bold; color: #555;";
+            liHerdeiro.innerHTML = `<span style="${estiloH}">${nomeH} ${emojis}</span>`;
             herdeirosUL.appendChild(liHerdeiro);
           });
+
           li.appendChild(herdeirosUL);
         }
 
@@ -407,244 +373,6 @@
       });
     }
 
-    function abrirModalParte(parte, index) {
-      // Implementação do modal para edição dos detalhes da parte
-      parteDetailsContainer.innerHTML = "";
-      
-      const title = document.createElement("h3");
-      title.textContent = "Detalhes da Parte - " + ((typeof parte === "object") ? parte.nome : parte);
-      parteDetailsContainer.appendChild(title);
-      
-      // Exemplo de campos para edição
-      const statusLabel = document.createElement("label");
-      statusLabel.textContent = "Status: ";
-      const statusSelect = document.createElement("select");
-      statusSelect.className = "parte-status";
-      statusSelect.dataset.index = index;
-      const optionVivo = document.createElement("option");
-      optionVivo.value = "vivo";
-      optionVivo.textContent = "Vivo";
-      const optionFalecido = document.createElement("option");
-      optionFalecido.value = "falecido";
-      optionFalecido.textContent = "Falecido";
-      let initialStatus = (parte.status) ? parte.status.toLowerCase() : "vivo";
-      optionVivo.selected = (initialStatus === "vivo");
-      optionFalecido.selected = (initialStatus === "falecido");
-      statusSelect.appendChild(optionVivo);
-      statusSelect.appendChild(optionFalecido);
-      statusLabel.appendChild(statusSelect);
-      parteDetailsContainer.appendChild(statusLabel);
-      
-      // Container para campos adicionais dinâmicos
-      const additionalContainer = document.createElement("div");
-      additionalContainer.id = "additional-fields";
-      parteDetailsContainer.appendChild(additionalContainer);
-      
-      function renderAdditionalFields() {
-        additionalContainer.innerHTML = "";
-        const statusValue = statusSelect.value;
-        if (statusValue === "vivo") {
-          const telefoneLabel = document.createElement("label");
-          telefoneLabel.textContent = "Telefone: ";
-          const telefoneInput = document.createElement("input");
-          telefoneInput.type = "text";
-          telefoneInput.className = "parte-telefone";
-          telefoneInput.value = (parte.telefone ? parte.telefone : "");
-          telefoneLabel.appendChild(telefoneInput);
-          additionalContainer.appendChild(telefoneLabel);
-          
-          const emailLabel = document.createElement("label");
-          emailLabel.textContent = "Email: ";
-          const emailInput = document.createElement("input");
-          emailInput.type = "text";
-          emailInput.className = "parte-email";
-          emailInput.value = (parte.email ? parte.email : "");
-          emailLabel.appendChild(emailInput);
-          additionalContainer.appendChild(emailLabel);
-          
-          const contatoLabel = document.createElement("label");
-          contatoLabel.textContent = "Contato: ";
-          const contatoSelect = document.createElement("select");
-          contatoSelect.className = "parte-contato";
-          const optionSim = document.createElement("option");
-          optionSim.value = "sim";
-          optionSim.textContent = "Sim";
-          const optionNao = document.createElement("option");
-          optionNao.value = "não";
-          optionNao.textContent = "Não";
-          contatoSelect.appendChild(optionSim);
-          contatoSelect.appendChild(optionNao);
-          let initialContato = (parte.contato) ? parte.contato.toLowerCase() : "não";
-          contatoSelect.value = initialContato;
-          contatoLabel.appendChild(contatoSelect);
-          additionalContainer.appendChild(contatoLabel);
-          const lpLabel = document.createElement("label");
-          lpLabel.textContent = "LP: ";
-          const lpSelect = document.createElement("select");
-          lpSelect.className = "parte-lp";
-          const lpSim = document.createElement("option");
-          lpSim.value = "sim";
-          lpSim.textContent = "Sim";
-          const lpNao = document.createElement("option");
-          lpNao.value = "não";
-          lpNao.textContent = "Não";
-          lpSelect.appendChild(lpSim);
-          lpSelect.appendChild(lpNao);
-          lpSelect.value = (parte.lp) ? parte.lp.toLowerCase() : "não";
-          lpLabel.appendChild(lpSelect);
-          additionalContainer.appendChild(lpLabel);
-          const interesseLabelParte = document.createElement("label");
-          interesseLabelParte.textContent = "Interesse: ";
-          const interesseSelectParte = document.createElement("select");
-          interesseSelectParte.className = "parte-interesse";interesseSelectParte.appendChild(Object.assign(document.createElement("option"), { value: "sim", textContent: "Sim" }));
-          interesseSelectParte.appendChild(Object.assign(document.createElement("option"), { value: "não", textContent: "Não" }));
-          interesseSelectParte.value = (parte.interesse) ? parte.interesse.toLowerCase() : "não";
-          interesseLabelParte.appendChild(interesseSelectParte);
-          additionalContainer.appendChild(interesseLabelParte);
-
-          const interesseLabel = document.createElement("label");
-          interesseLabel.textContent = "Interesse: ";
-          const interesseSelect = document.createElement("select");
-          interesseSelect.className = "parte-interesse";interesseSelect.appendChild(Object.assign(document.createElement("option"), { value: "sim", textContent: "Sim" }));
-          interesseSelect.appendChild(Object.assign(document.createElement("option"), { value: "não", textContent: "Não" }));
-          interesseSelect.value = (parte.interesse) ? parte.interesse.toLowerCase() : "não";
-          interesseLabel.appendChild(interesseSelect);
-
-
-          
-          const acordoContainer = document.createElement("div");
-          acordoContainer.id = "acordo-container";
-          acordoContainer.style.display = (contatoSelect.value === "sim") ? "block" : "none";
-          const acordoLabel = document.createElement("label");
-          acordoLabel.textContent = "Assinou Acordo: ";
-          const acordoSelect = document.createElement("select");
-          acordoSelect.className = "parte-assinou";
-          const acOptionSim = document.createElement("option");
-          acOptionSim.value = "sim";
-          acOptionSim.textContent = "Sim";
-          const acOptionNao = document.createElement("option");
-          acOptionNao.value = "não";
-          acOptionNao.textContent = "Não";
-          acordoSelect.appendChild(acOptionSim);
-          acordoSelect.appendChild(acOptionNao);
-          acordoSelect.value = (parte.assinou) ? parte.assinou.toLowerCase() : "não";
-          acordoLabel.appendChild(acordoSelect);
-          acordoContainer.appendChild(acordoLabel);
-          additionalContainer.appendChild(acordoContainer);
-          
-          contatoSelect.addEventListener("change", function() {
-            if (contatoSelect.value === "sim") {
-              acordoContainer.style.display = "block";
-            } else {
-              acordoContainer.style.display = "none";
-            }
-          });
-          
-        } else if (statusValue === "falecido") {
-          const herdeirosContainer = document.createElement("div");
-          herdeirosContainer.id = "herdeiros-container";
-  // → Novo campo: Número de herdeiros (máx. 2 dígitos)
-  const numHLabel = document.createElement("label");
-  numHLabel.textContent = "Nº de herdeiros: ";
-  const numHInput = document.createElement("input");
-  numHInput.type = "number";
-  numHInput.id = "num-herdeiros";
-  numHInput.min = 0;
-  numHInput.max = 99;
-  numHInput.value = Array.isArray(parte.herdeiros) ? parte.herdeiros.length : 0;
-  numHInput.style.width = "40px";
-  numHLabel.appendChild(numHInput);
-  herdeirosContainer.appendChild(numHLabel);
-          const herdeirosLabel = document.createElement("label");
-          herdeirosLabel.textContent = "Herdeiros:";
-          herdeirosContainer.appendChild(herdeirosLabel);
-          const herdeirosList = document.createElement("div");
-          herdeirosList.id = "herdeiros-list-modal";
-          herdeirosContainer.appendChild(herdeirosList);
-          
-          let herdeirosData = [];
-          if (parte.herdeiros && Array.isArray(parte.herdeiros)) {
-            herdeirosData = parte.herdeiros;
-          } else if (typeof parte.herdeiros === "string" && parte.herdeiros.trim() !== "") {
-            herdeirosData = [parte.herdeiros];
-          } else {
-            herdeirosData = [""];
-          }
-          
-function addHerdeiroRow(value = "", assinou = "não", contato = "não", interesse = "não") {
-  const row = document.createElement("div");
-  row.className = "herdeiro-row";
-
-  // (já existente) input para nome
-  const input = document.createElement("input");
-  input.type = "text";
-  input.className = "herdeiro-name";
-  input.value = value;
-  row.appendChild(input);
-
-  // (atualizado) select “Assinou?”
-  const assinouSelect = document.createElement("select");
-  assinouSelect.className = "herdeiro-assinou";
-  const asnSim = document.createElement("option");
-  asnSim.value = "sim";
-  asnSim.textContent = "Sim";
-  const asnNao = document.createElement("option");
-  asnNao.value = "não";
-  asnNao.textContent = "Não";
-  assinouSelect.appendChild(asnSim);
-  assinouSelect.appendChild(asnNao);
-  assinouSelect.value = assinou.toLowerCase();
-  const assinouLabel = document.createElement("label");
-  assinouLabel.textContent = " Assinou?";
-  assinouLabel.appendChild(assinouSelect);
-  row.appendChild(assinouLabel);
-
-  // → Novo checkbox “Contato?”
-  const contatoSelect = document.createElement("select");
-  contatoSelect.className = "herdeiro-contato";
-  const ctSim = document.createElement("option");
-  ctSim.value = "sim";
-  ctSim.textContent = "Sim";
-  const ctNao = document.createElement("option");
-  ctNao.value = "não";
-  ctNao.textContent = "Não";
-  contatoSelect.appendChild(ctSim);
-  contatoSelect.appendChild(ctNao);
-  contatoSelect.value = contato.toLowerCase();
-  const contatoLabel = document.createElement("label");
-  contatoLabel.textContent = " Contato?";
-  contatoLabel.appendChild(contatoSelect);
-  row.appendChild(contatoLabel);
-
-  // → Novo select “Interesse?”
-  const interesseSelect = document.createElement("select");
-  interesseSelect.className = "herdeiro-interesse";
-  let intSimParte = document.createElement("option");
-  intSimParte.value = "sim";
-  intSimParte.textContent = "Sim";
-  let intNaoParte = document.createElement("option");
-  intNaoParte.value = "não";
-  intNaoParte.textContent = "Não";
-  interesseSelect.appendChild(Object.assign(document.createElement("option"), { value: "sim", textContent: "Sim" }));
-  interesseSelect.appendChild(Object.assign(document.createElement("option"), { value: "não", textContent: "Não" }));
-  interesseSelect.value = interesse.toLowerCase();
-  const interesseLabel = document.createElement("label");
-  interesseLabel.textContent = " Interesse?";
-  interesseLabel.appendChild(interesseSelect);
-  row.appendChild(interesseLabel);
-
-
-  // (já existente) botão de remover
-  if (herdeirosList.children.length > 0) {
-    const removeBtn = document.createElement("button");
-    removeBtn.type = "button";
-    removeBtn.textContent = "−";
-    removeBtn.addEventListener("click", () => herdeirosList.removeChild(row));
-    row.appendChild(removeBtn);
-  }
-
-  herdeirosList.appendChild(row);
-}
           
           herdeirosData.forEach(function(item) {
             if (typeof item === "object") {
