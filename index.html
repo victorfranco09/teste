@@ -359,7 +359,8 @@
               const herdeiroNome = herdeiro.nome;
               const herdeiroFlag = (herdeiro.assinou && herdeiro.assinou.toLowerCase() === "sim") ? "✍️" : "📄";
               const contatoFlag = (herdeiro.contato && herdeiro.contato.toLowerCase() === "sim") ? "🗣️ " : "";
-              liHerdeiro.innerHTML = `${contatoFlag}${herdeiroNome} ${herdeiroFlag}`;
+              const interesseFlag = (herdeiro.interesse && herdeiro.interesse.toLowerCase() === "sim") ? "💬 " : "";
+              liHerdeiro.innerHTML = `${interesseFlag}${contatoFlag}${herdeiroNome} ${herdeiroFlag}`;
             } else if (typeof herdeiro === "string") {
               liHerdeiro.innerHTML = herdeiro;
             }
@@ -473,7 +474,6 @@
           interesseSelect.appendChild(intNao);
           interesseSelect.value = (parte.interesse) ? parte.interesse.toLowerCase() : "não";
           interesseLabel.appendChild(interesseSelect);
-          additionalContainer.appendChild(interesseLabel);
 
 
           
@@ -636,7 +636,6 @@ function addHerdeiroRow(value = "", assinou = "não", contato = "não", interess
           interesseSelect.appendChild(intNao);
           interesseSelect.value = (parte.interesse) ? parte.interesse.toLowerCase() : "não";
           interesseLabel.appendChild(interesseSelect);
-          additionalContainer.appendChild(interesseLabel);
 
 
           additionalContainer.appendChild(herdeirosContainer);
