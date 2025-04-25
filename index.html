@@ -359,8 +359,10 @@
               const herdeiroNome = herdeiro.nome;
               const herdeiroFlag = (herdeiro.assinou && herdeiro.assinou.toLowerCase() === "sim") ? "✍️" : "📄";
               const contatoFlag = (herdeiro.contato && herdeiro.contato.toLowerCase() === "sim") ? "🗣️ " : "";
-              const interesseFlag = (herdeiro.interesse && herdeiro.interesse.toLowerCase() === "sim") ? "💬 " : "";
-              liHerdeiro.innerHTML = `${interesseFlag}${contatoFlag}${herdeiroNome} ${herdeiroFlag}`;
+              const interesse = (herdeiro.interesse && herdeiro.interesse.toLowerCase() === "sim");
+              const interesseFlag = interesse ? "💬 " : "";
+              const nomeFormatado = interesse ? `${contatoFlag}${herdeiroNome} ${herdeiroFlag}` : `<span style="color:#555;">${contatoFlag}${herdeiroNome} ${herdeiroFlag}</span>`;
+              liHerdeiro.innerHTML = `${interesseFlag}${nomeFormatado}`;
             } else if (typeof herdeiro === "string") {
               liHerdeiro.innerHTML = herdeiro;
             }
@@ -567,14 +569,21 @@ function addHerdeiroRow(value = "", assinou = "não", contato = "não", interess
   contatoLabel.prepend(contatoCheckbox);
   row.appendChild(contatoLabel);
 
-  // → Novo checkbox “Interesse?”
-  const interesseCheckbox = document.createElement("input");
-  interesseCheckbox.type = "checkbox";
-  interesseCheckbox.className = "herdeiro-interesse";
-  interesseCheckbox.checked = (interesse === "sim");
+  // → Novo select “Interesse?”
+  const interesseSelect = document.createElement("select");
+  interesseSelect.className = "herdeiro-interesse";
+  const intSim = document.createElement("option");
+  intSim.value = "sim";
+  intSim.textContent = "Sim";
+  const intNao = document.createElement("option");
+  intNao.value = "não";
+  intNao.textContent = "Não";
+  interesseSelect.appendChild(intSim);
+  interesseSelect.appendChild(intNao);
+  interesseSelect.value = interesse.toLowerCase();
   const interesseLabel = document.createElement("label");
   interesseLabel.textContent = " Interesse?";
-  interesseLabel.prepend(interesseCheckbox);
+  interesseLabel.appendChild(interesseSelect);
   row.appendChild(interesseLabel);
 
 
@@ -676,7 +685,7 @@ herdeirosRows.forEach(row => {
   const nome = row.querySelector(".herdeiro-name").value.trim();
   const assinou = row.querySelector(".herdeiro-assinou").checked ? "sim" : "não";
   const contato = row.querySelector(".herdeiro-contato").checked ? "sim" : "não";
-  const interesse = row.querySelector(".herdeiro-interesse").checked ? "sim" : "não";
+  const interesse = row.querySelector(".herdeiro-interesse").value;
   if (nome) herdeirosArray.push({ nome, assinou, contato, interesse });
 });
 updatedPart.herdeiros = herdeirosArray;
