@@ -459,6 +459,22 @@
           lpSelect.value = (parte.lp) ? parte.lp.toLowerCase() : "não";
           lpLabel.appendChild(lpSelect);
           additionalContainer.appendChild(lpLabel);
+          const interesseLabel = document.createElement("label");
+          interesseLabel.textContent = "Interesse: ";
+          const interesseSelect = document.createElement("select");
+          interesseSelect.className = "parte-interesse";
+          const intSim = document.createElement("option");
+          intSim.value = "sim";
+          intSim.textContent = "Sim";
+          const intNao = document.createElement("option");
+          intNao.value = "não";
+          intNao.textContent = "Não";
+          interesseSelect.appendChild(intSim);
+          interesseSelect.appendChild(intNao);
+          interesseSelect.value = (parte.interesse) ? parte.interesse.toLowerCase() : "não";
+          interesseLabel.appendChild(interesseSelect);
+          additionalContainer.appendChild(interesseLabel);
+
 
           
           const acordoContainer = document.createElement("div");
@@ -606,6 +622,22 @@ function addHerdeiroRow(value = "", assinou = "não", contato = "não", interess
           lpSelect.value = (parte.lp) ? parte.lp.toLowerCase() : "não";
           lpLabel.appendChild(lpSelect);
           additionalContainer.appendChild(lpLabel);
+          const interesseLabel = document.createElement("label");
+          interesseLabel.textContent = "Interesse: ";
+          const interesseSelect = document.createElement("select");
+          interesseSelect.className = "parte-interesse";
+          const intSim = document.createElement("option");
+          intSim.value = "sim";
+          intSim.textContent = "Sim";
+          const intNao = document.createElement("option");
+          intNao.value = "não";
+          intNao.textContent = "Não";
+          interesseSelect.appendChild(intSim);
+          interesseSelect.appendChild(intNao);
+          interesseSelect.value = (parte.interesse) ? parte.interesse.toLowerCase() : "não";
+          interesseLabel.appendChild(interesseSelect);
+          additionalContainer.appendChild(interesseLabel);
+
 
           additionalContainer.appendChild(herdeirosContainer);
         }
