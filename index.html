@@ -356,13 +356,21 @@
           parte.herdeiros.forEach(herdeiro => {
             const liHerdeiro = document.createElement("li");
             if (herdeiro && typeof herdeiro === "object" && herdeiro.hasOwnProperty("nome")) {
-              const herdeiroNome = herdeiro.nome;
-              const herdeiroFlag = (herdeiro.assinou && herdeiro.assinou.toLowerCase() === "sim") ? "✍️" : "📄";
-              const contatoFlag = (herdeiro.contato && herdeiro.contato.toLowerCase() === "sim") ? "🗣️ " : "";
-              const interesse = (herdeiro.interesse && herdeiro.interesse.toLowerCase() === "sim");
-              const interesseFlag = interesse ? "💬 " : "";
-              const nomeFormatado = interesse ? `${contatoFlag}${herdeiroNome} ${herdeiroFlag}` : `<span style="color:#555;">${contatoFlag}${herdeiroNome} ${herdeiroFlag}</span>`;
-              liHerdeiro.innerHTML = `${interesseFlag}${nomeFormatado}`;
+              const nome = herdeiro.nome;
+              const interesse = herdeiro.interesse && herdeiro.interesse.toLowerCase() === "sim";
+              const contato = herdeiro.contato && herdeiro.contato.toLowerCase() === "sim";
+              const assinou = herdeiro.assinou && herdeiro.assinou.toLowerCase() === "sim";
+              
+              let emojis = "";
+              if (interesse) {
+                if (contato) emojis += "🗣️ ";
+                if (assinou) emojis += "✍️";
+                if (!assinou) emojis += "📄";
+                emojis += " 💬";
+                liHerdeiro.innerHTML = `${nome} ${emojis}`;
+              } else {
+                liHerdeiro.innerHTML = `<span style="color:#555; font-weight:600;">${nome}</span>`;
+              }
             } else if (typeof herdeiro === "string") {
               liHerdeiro.innerHTML = herdeiro;
             }
