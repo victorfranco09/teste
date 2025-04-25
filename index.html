@@ -497,10 +497,10 @@
           interesseLabelParte.textContent = "Interesse: ";
           const interesseSelectParte = document.createElement("select");
           interesseSelectParte.className = "parte-interesse";
-          const intSim = document.createElement("option");
+          const intSimHerdeiro = document.createElement("option");
           intSim.value = "sim";
           intSim.textContent = "Sim";
-          const intNao = document.createElement("option");
+          const intNaoHerdeiro = document.createElement("option");
           intNao.value = "não";
           intNao.textContent = "Não";
           interesseSelectParte.appendChild(intSim);
@@ -513,14 +513,14 @@
           interesseLabel.textContent = "Interesse: ";
           const interesseSelect = document.createElement("select");
           interesseSelect.className = "parte-interesse";
-          const intSim = document.createElement("option");
+          const intSimHerdeiro = document.createElement("option");
           intSim.value = "sim";
           intSim.textContent = "Sim";
-          const intNao = document.createElement("option");
+          const intNaoHerdeiro = document.createElement("option");
           intNao.value = "não";
           intNao.textContent = "Não";
-          interesseSelect.appendChild(intSim);
-          interesseSelect.appendChild(intNao);
+          interesseSelect.appendChild(intSimHerdeiro);
+          interesseSelect.appendChild(intNaoHerdeiro);
           interesseSelect.value = (parte.interesse) ? parte.interesse.toLowerCase() : "não";
           interesseLabel.appendChild(interesseSelect);
 
@@ -639,8 +639,8 @@ function addHerdeiroRow(value = "", assinou = "não", contato = "não", interess
   const intNaoParte = document.createElement("option");
   intNaoParte.value = "não";
   intNaoParte.textContent = "Não";
-  interesseSelect.appendChild(intSim);
-  interesseSelect.appendChild(intNao);
+  interesseSelect.appendChild(intSimHerdeiro);
+  interesseSelect.appendChild(intNaoHerdeiro);
   interesseSelect.value = interesse.toLowerCase();
   const interesseLabel = document.createElement("label");
   interesseLabel.textContent = " Interesse?";
@@ -696,10 +696,10 @@ function addHerdeiroRow(value = "", assinou = "não", contato = "não", interess
           interesseLabelParte.textContent = "Interesse: ";
           const interesseSelectParte = document.createElement("select");
           interesseSelectParte.className = "parte-interesse";
-          const intSim = document.createElement("option");
+          const intSimHerdeiro = document.createElement("option");
           intSim.value = "sim";
           intSim.textContent = "Sim";
-          const intNao = document.createElement("option");
+          const intNaoHerdeiro = document.createElement("option");
           intNao.value = "não";
           intNao.textContent = "Não";
           interesseSelectParte.appendChild(intSim);
@@ -712,14 +712,14 @@ function addHerdeiroRow(value = "", assinou = "não", contato = "não", interess
           interesseLabel.textContent = "Interesse: ";
           const interesseSelect = document.createElement("select");
           interesseSelect.className = "parte-interesse";
-          const intSim = document.createElement("option");
+          const intSimHerdeiro = document.createElement("option");
           intSim.value = "sim";
           intSim.textContent = "Sim";
-          const intNao = document.createElement("option");
+          const intNaoHerdeiro = document.createElement("option");
           intNao.value = "não";
           intNao.textContent = "Não";
-          interesseSelect.appendChild(intSim);
-          interesseSelect.appendChild(intNao);
+          interesseSelect.appendChild(intSimHerdeiro);
+          interesseSelect.appendChild(intNaoHerdeiro);
           interesseSelect.value = (parte.interesse) ? parte.interesse.toLowerCase() : "não";
           interesseLabel.appendChild(interesseSelect);
 
