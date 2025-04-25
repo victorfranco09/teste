@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -9,10 +8,9 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="script.js" defer></script>
+  <script defer src="script.js"></script>
 </head>
 <body>
-  <!-- Estrutura básica conforme enviado -->
   <div id="login-screen">
     <div class="login-container">
       <h2>Login</h2>
@@ -22,10 +20,17 @@
       <p id="login-error" class="error"></p>
     </div>
   </div>
+
   <div id="dashboard" class="hidden">
-    <header><h1>Painel de Pendências</h1></header>
+    <header>
+      <h1>Painel de Pendências</h1>
+    </header>
     <div class="container">
-      <aside id="sidebar"><h3>Pendências</h3><div id="pendencias-list"></div></aside>
+      <aside id="sidebar">
+        <h3>Pendências</h3>
+        <div id="pendencias-list"></div>
+      </aside>
+
       <main id="content">
         <section id="detalhes-section" class="hidden">
           <div class="info-group">
@@ -52,6 +57,7 @@
             <button id="salvar-btn">Salvar Alterações</button>
             <p id="salvar-msg" class="success"></p>
           </div>
+
           <div id="andamentos-section">
             <h4>Adicionar Andamento</h4>
             <div class="andamento-input">
@@ -64,12 +70,38 @@
       </main>
     </div>
   </div>
+
+  <!-- Modal atualizado -->
   <div id="modal" class="modal hidden">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <div id="parte-details-container"></div>
+      <div id="parte-details-container">
+        <h3>Detalhes da Parte</h3>
+
+        <label for="parte-status">Status:</label>
+        <select id="parte-status">
+          <option value="vivo">Vivo</option>
+          <option value="falecido">Falecido</option>
+        </select>
+
+        <label for="parte-interesse" style="margin-top: 10px;">Interesse:</label>
+        <select id="parte-interesse">
+          <option value="sim">Sim</option>
+          <option value="não">Não</option>
+        </select>
+
+        <label for="parte-lp" style="margin-top: 10px;">LP:</label>
+        <select id="parte-lp">
+          <option value="sim">Sim</option>
+          <option value="não">Não</option>
+        </select>
+
+        <div id="additional-fields"></div>
+      </div>
+
       <button id="salvar-parte-btn">Salvar Parte</button>
     </div>
   </div>
+
 </body>
 </html>
