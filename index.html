@@ -693,7 +693,7 @@ herdeirosRows.forEach(row => {
   const nome = row.querySelector(".herdeiro-name").value.trim();
   const assinou = row.querySelector(".herdeiro-assinou").checked ? "sim" : "não";
   const contato = row.querySelector(".herdeiro-contato").checked ? "sim" : "não";
-  const interesse = row.querySelector(".herdeiro-interesse").value;
+  const interesse = row.querySelector(".herdeiro-interesse")?.value || "não";
   if (nome) herdeirosArray.push({ nome, assinou, contato, interesse });
 });
 updatedPart.herdeiros = herdeirosArray;
