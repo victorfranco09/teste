@@ -360,17 +360,18 @@
               const interesse = herdeiro.interesse && herdeiro.interesse.toLowerCase() === "sim";
               const contato = herdeiro.contato && herdeiro.contato.toLowerCase() === "sim";
               const assinou = herdeiro.assinou && herdeiro.assinou.toLowerCase() === "sim";
-              
+
               let emojis = "";
-              if (interesse) {
-                if (contato) emojis += "🗣️ ";
-                if (assinou) emojis += "✍️";
-                if (!assinou) emojis += "📄";
-                emojis += " 💬";
-                liHerdeiro.innerHTML = `${nome} ${emojis}`;
+              if (assinou) {
+                emojis = "✍️";
               } else {
-                liHerdeiro.innerHTML = `<span style="color:#555; font-weight:600;">${nome}</span>`;
+                emojis += "📄";
+                if (contato) emojis += " 🗣️";
+                if (interesse) emojis += " 💬";
               }
+
+              const estilo = interesse ? "font-weight: bold;" : "font-weight: bold; color: #555;";
+              liHerdeiro.innerHTML = `<span style="${estilo}">${nome} ${emojis}</span>`;
             } else if (typeof herdeiro === "string") {
               liHerdeiro.innerHTML = herdeiro;
             }
