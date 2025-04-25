@@ -633,12 +633,12 @@ function addHerdeiroRow(value = "", assinou = "não", contato = "não", interess
   // → Novo select “Interesse?”
   const interesseSelect = document.createElement("select");
   interesseSelect.className = "herdeiro-interesse";
-  const intSim = document.createElement("option");
-  intSim.value = "sim";
-  intSim.textContent = "Sim";
-  const intNao = document.createElement("option");
-  intNao.value = "não";
-  intNao.textContent = "Não";
+  const intSimParte = document.createElement("option");
+  intSimParte.value = "sim";
+  intSimParte.textContent = "Sim";
+  const intNaoParte = document.createElement("option");
+  intNaoParte.value = "não";
+  intNaoParte.textContent = "Não";
   interesseSelect.appendChild(intSim);
   interesseSelect.appendChild(intNao);
   interesseSelect.value = interesse.toLowerCase();
