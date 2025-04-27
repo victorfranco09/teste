@@ -489,6 +489,32 @@
           }
         } 
         else if (statusValue === "falecido") {
+          // Deixou bens?
+          const bensLabel = document.createElement("label");
+          bensLabel.textContent = "Deixou bens?: ";
+          const bensSelect = document.createElement("select");
+          bensSelect.className = "parte-deixou-bens";
+          ["sim","não"].forEach(opt => {
+            const o = document.createElement("option");
+            o.value = opt;
+            o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
+            bensSelect.appendChild(o);
+          });
+          bensSelect.value = (parte.deixou_bens || "não").toLowerCase();
+          bensLabel.appendChild(bensSelect);
+          additionalContainer.appendChild(bensLabel);
+
+          // Número de herdeiros
+          const numHLabel = document.createElement("label");
+          numHLabel.textContent = "Número de herdeiros: ";
+          const numHInput = document.createElement("input");
+          numHInput.type = "text";
+          numHInput.maxLength = 2;
+          numHInput.pattern = "\d*";
+          numHInput.className = "parte-num-herdeiros";
+          numHLabel.appendChild(numHInput);
+          additionalContainer.appendChild(numHLabel);
+
           // Número de herdeiros
           const numHLabel = document.createElement("label");
           numHLabel.textContent = "Número de herdeiros: ";
