@@ -23,17 +23,6 @@
   #modal .modal-content .field-row .field-group {
     flex: 1 1 200px;
   }
-
-  /* Campos em linha no modal de Parte */
-  #modal .modal-content .field-row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 16px;
-  }
-  #modal .modal-content .field-row .field-group {
-    flex: 1 1 200px;
-  }
 </style>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -371,6 +360,7 @@
       });
     }
 
+    
     function abrirModalParte(parte, index) {
       parteDetailsContainer.innerHTML = "";
       // Título
@@ -385,184 +375,175 @@
       // Status
       const statusLabel = document.createElement("label");
       statusLabel.className = "field-group";
-      statusLabel.textContent = "Status: ";
+      statusLabel.textContent = "Status:";
       const statusSelect = document.createElement("select");
       statusSelect.className = "parte-status";
       statusSelect.dataset.index = index;
-      [\"vivo\",\"falecido\"].forEach(opt => {
-        const o = document.createElement(\"option\");
+      ["vivo","falecido"].forEach(opt => {
+        const o = document.createElement("option");
         o.value = opt;
         o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
         statusSelect.appendChild(o);
       });
-      statusSelect.value = (parte.status||\"vivo\").toLowerCase();
+      statusSelect.value = (parte.status||"vivo").toLowerCase();
       statusLabel.appendChild(statusSelect);
       basicFields.appendChild(statusLabel);
 
       // Interesse
-      const interesseLabel = document.createElement(\"label\");
-      interesseLabel.className = \"field-group\";
-      interesseLabel.id = \"global-interesse-label\";
-      interesseLabel.textContent = \"Interesse: \";
-      const interesseSelect = document.createElement(\"select\");
-      interesseSelect.className = \"parte-interesse\";
-      [\"sim\",\"não\"].forEach(opt => {
-        const o = document.createElement(\"option\");
+      const interesseLabel = document.createElement("label");
+      interesseLabel.className = "field-group";
+      interesseLabel.id = "global-interesse-label";
+      interesseLabel.textContent = "Interesse:";
+      const interesseSelect = document.createElement("select");
+      interesseSelect.className = "parte-interesse";
+      ["sim","não"].forEach(opt => {
+        const o = document.createElement("option");
         o.value = opt;
         o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
         interesseSelect.appendChild(o);
       });
-      interesseSelect.value = (parte.interesse||\"não\");
+      interesseSelect.value = (parte.interesse||"não");
       interesseLabel.appendChild(interesseSelect);
       basicFields.appendChild(interesseLabel);
 
       // LP
-      const lpLabel = document.createElement(\"label\");
-      lpLabel.className = \"field-group\";
-      lpLabel.textContent = \"LP: \";
-      const lpSelect = document.createElement(\"select\");
-      lpSelect.className = \"parte-lp\";
-      [\"sim\",\"não\"].forEach(opt => {
-        const o = document.createElement(\"option\");
+      const lpLabel = document.createElement("label");
+      lpLabel.className = "field-group";
+      lpLabel.textContent = "LP:";
+      const lpSelect = document.createElement("select");
+      lpSelect.className = "parte-lp";
+      ["sim","não"].forEach(opt => {
+        const o = document.createElement("option");
         o.value = opt;
         o.textContent = opt.toUpperCase();
         lpSelect.appendChild(o);
       });
-      lpSelect.value = (parte.lp||\"não\").toLowerCase();
+      lpSelect.value = (parte.lp||"não").toLowerCase();
       lpLabel.appendChild(lpSelect);
       basicFields.appendChild(lpLabel);
 
       // Contato antes de Telefone/Email
-      const contatoLabel = document.createElement(\"label\");
-      contatoLabel.className = \"field-group\";
-      contatoLabel.textContent = \"Contato: \";
-      const contatoSelect = document.createElement(\"select\");
-      contatoSelect.className = \"parte-contato\";
-      [\"sim\",\"não\"].forEach(opt => {
-        const o = document.createElement(\"option\");
+      const contatoLabel = document.createElement("label");
+      contatoLabel.className = "field-group";
+      contatoLabel.textContent = "Contato:";
+      const contatoSelect = document.createElement("select");
+      contatoSelect.className = "parte-contato";
+      ["sim","não"].forEach(opt => {
+        const o = document.createElement("option");
         o.value = opt;
         o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
         contatoSelect.appendChild(o);
       });
-      contatoSelect.value = (parte.contato||\"não\");
+      contatoSelect.value = (parte.contato||"não");
       contatoLabel.appendChild(contatoSelect);
       basicFields.appendChild(contatoLabel);
 
       parteDetailsContainer.appendChild(basicFields);
 
       // Container para campos adicionais
-      const additionalContainer = document.createElement(\"div\");
-      additionalContainer.id = \"additional-fields\";
+      const additionalContainer = document.createElement("div");
+      additionalContainer.id = "additional-fields";
       parteDetailsContainer.appendChild(additionalContainer);
 
       function renderAdditionalFields() {
         const statusValue = statusSelect.value;
-        additionalContainer.innerHTML = \"\";
+        additionalContainer.innerHTML = "";
 
         // Mostrar/ocultar Interesse
-        document.getElementById(\"global-interesse-label\").style.display = statusValue === \"vivo\" ? \"block\" : \"none\";
+        const gi = document.getElementById("global-interesse-label");
+        if (gi) gi.style.display = statusValue === "vivo" ? "block" : "none";
 
-        if (statusValue === \"vivo\") {
+        if (statusValue === "vivo") {
           // Telefone
-          const telefoneLabel = document.createElement(\"label\");
-          telefoneLabel.textContent = \"Telefone: \";
-          const telefoneInput = document.createElement(\"input\");
-          telefoneInput.type = \"text\";
-          telefoneInput.className = \"parte-telefone\";
-          telefoneInput.value = parte.telefone||\"\";
-          telefoneLabel.appendChild(telefoneInput);
-          additionalContainer.appendChild(telefoneLabel);
+          const tLabel = document.createElement("label");
+          tLabel.textContent = "Telefone:";
+          const tInput = document.createElement("input");
+          tInput.type = "text"; tInput.className = "parte-telefone";
+          tInput.value = parte.telefone||""; tLabel.appendChild(tInput);
+          additionalContainer.appendChild(tLabel);
 
           // Email
-          const emailLabel = document.createElement(\"label\");
-          emailLabel.textContent = \"Email: \";
-          const emailInput = document.createElement(\"input\");
-          emailInput.type = \"text\";
-          emailInput.className = \"parte-email\";
-          emailInput.value = parte.email||\"\";
-          emailLabel.appendChild(emailInput);
-          additionalContainer.appendChild(emailLabel);
+          const eLabel = document.createElement("label");
+          eLabel.textContent = "Email:";
+          const eInput = document.createElement("input");
+          eInput.type = "text"; eInput.className = "parte-email";
+          eInput.value = parte.email||""; eLabel.appendChild(eInput);
+          additionalContainer.appendChild(eLabel);
 
-          // Acordo se contato=sim
-          if (contatoSelect.value === \"sim\") {
-            const acordoLabel = document.createElement(\"label\");
-            acordoLabel.textContent = \"Assinou Acordo: \";
-            const acordoSelect = document.createElement(\"select\");
-            acordoSelect.className = \"parte-assinou\";
-            [\"sim\",\"não\"].forEach(opt => {
-              const o = document.createElement(\"option\");
+          // Assinou Acordo
+          if (contatoSelect.value === "sim") {
+            const aLabel = document.createElement("label");
+            aLabel.textContent = "Assinou Acordo:";
+            const aSelect = document.createElement("select");
+            aSelect.className = "parte-assinou";
+            ["sim","não"].forEach(opt => {
+              const o = document.createElement("option");
               o.value = opt;
               o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-              acordoSelect.appendChild(o);
+              aSelect.appendChild(o);
             });
-            acordoSelect.value = parte.assinou||\"não\";
-            acordoLabel.appendChild(acordoSelect);
-            additionalContainer.appendChild(acordoLabel);
+            aSelect.value = parte.assinou||"não";
+            aLabel.appendChild(aSelect);
+            additionalContainer.appendChild(aLabel);
           }
-        } else if (statusValue === \"falecido\") {
-          // Herdeiros (igual à implementação original)
-          const herdeirosContainer = document.createElement(\"div\");
-          herdeirosContainer.id = \"herdeiros-container\";
-          const herdeirosLabel = document.createElement(\"label\");
-          herdeirosLabel.textContent = \"Herdeiros:\";
-          herdeirosContainer.appendChild(herdeirosLabel);
-          const herdeirosList = document.createElement(\"div\");
-          herdeirosList.id = \"herdeiros-list-modal\";
-          herdeirosContainer.appendChild(herdeirosList);
-          let dataH = Array.isArray(parte.herdeiros) ? parte.herdeiros : [];
-          dataH.forEach(h => {
-            const row = document.createElement(\"div\");
-            // Lógica de criação de cada herdeiro...
-            herdeirosList.appendChild(row);
+        } else if (statusValue === "falecido") {
+          // Herdeiros (exemplo simples)
+          const hc = document.createElement("div");
+          hc.id = "herdeiros-container";
+          const hl = document.createElement("label");
+          hl.textContent = "Herdeiros:";
+          hc.appendChild(hl);
+          const hlst = document.createElement("div");
+          hlst.id = "herdeiros-list-modal";
+          hc.appendChild(hlst);
+          (parte.herdeiros || []).forEach(h => {
+            const row = document.createElement("div");
+            row.textContent = typeof h === "object" ? h.nome : h;
+            hlst.appendChild(row);
           });
-          additionalContainer.appendChild(herdeirosContainer);
+          additionalContainer.appendChild(hc);
         }
 
         // Campos LP
-        if (lpSelect.value === \"sim\") {
-          const lpProcLabel = document.createElement(\"label\");
-          lpProcLabel.textContent = \"Nº Processo (LP): \";
-          const lpProcInput = document.createElement(\"input\");
-          lpProcInput.type = \"text\";
-          lpProcInput.className = \"parte-lp-numero-processo\";
-          lpProcInput.value = parte.numero_processo_lp||\"\";
-          lpProcLabel.appendChild(lpProcInput);
-          additionalContainer.appendChild(lpProcLabel);
+        if (lpSelect.value === "sim") {
+          const lp1 = document.createElement("label");
+          lp1.textContent = "Nº Processo (LP):";
+          const lp1in = document.createElement("input");
+          lp1in.type = "text"; lp1in.className = "parte-lp-numero-processo";
+          lp1in.value = parte.numero_processo_lp||""; lp1.appendChild(lp1in);
+          additionalContainer.appendChild(lp1);
 
-          const lpAdvLabel = document.createElement(\"label\");
-          lpAdvLabel.textContent = \"Nome do Advogado (LP): \";
-          const lpAdvInput = document.createElement(\"input\");
-          lpAdvInput.type = \"text\";
-          lpAdvInput.className = \"parte-lp-advogado\";
-          lpAdvInput.value = parte.advogado_lp||\"\";
-          lpAdvLabel.appendChild(lpAdvInput);
-          additionalContainer.appendChild(lpAdvLabel);
+          const lp2 = document.createElement("label");
+          lp2.textContent = "Nome do Advogado (LP):";
+          const lp2in = document.createElement("input");
+          lp2in.type = "text"; lp2in.className = "parte-lp-advogado";
+          lp2in.value = parte.advogado_lp||""; lp2.appendChild(lp2in);
+          additionalContainer.appendChild(lp2);
 
-          const lpObsLabel = document.createElement(\"label\");
-          lpObsLabel.textContent = \"Observações (LP): \";
-          const lpObsTextarea = document.createElement(\"textarea\");
-          lpObsTextarea.className = \"parte-lp-observacoes\";
-          lpObsTextarea.rows = 3;
-          lpObsTextarea.value = parte.observacoes_lp||\"\";
-          lpObsLabel.appendChild(lpObsTextarea);
-          additionalContainer.appendChild(lpObsLabel);
+          const lp3 = document.createElement("label");
+          lp3.textContent = "Observações (LP):";
+          const lp3ta = document.createElement("textarea");
+          lp3ta.className = "parte-lp-observacoes"; lp3ta.rows = 3;
+          lp3ta.value = parte.observacoes_lp||""; lp3.appendChild(lp3ta);
+          additionalContainer.appendChild(lp3);
         }
       }
 
       // Listeners
-      [statusSelect, interesseSelect, lpSelect, contatoSelect].forEach(el => el.addEventListener(\"change\", renderAdditionalFields));
+      [statusSelect, interesseSelect, lpSelect, contatoSelect].forEach(el => el.addEventListener("change", renderAdditionalFields));
+
+      // Primeira renderização
       renderAdditionalFields();
 
-      // Botão Salvar no modal
-      const salvarBtnModal = document.createElement(\"button\");
-      salvarBtnModal.textContent = \"Salvar Parte\";
-      salvarBtnModal.className = \"parte-salvar\";
-      salvarBtnModal.dataset.index = index;
-      parteDetailsContainer.appendChild(salvarBtnModal);
-      salvarBtnModal.addEventListener(\"click\", async () => {/* ... */});
+      // Botão Salvar
+      const sb = document.createElement("button");
+      sb.textContent = "Salvar Parte"; sb.className = "parte-salvar";
+      sb.dataset.index = index; parteDetailsContainer.appendChild(sb);
+      sb.addEventListener("click", async () => { /* lógica de update */ });
 
-      modal.classList.remove(\"hidden\");
+      modal.classList.remove("hidden");
     }
+
 
     // Edição dos comentários
     document.querySelectorAll(".editar").forEach(botao => {
