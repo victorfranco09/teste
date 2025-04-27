@@ -489,6 +489,17 @@
           }
         } 
         else if (statusValue === "falecido") {
+          // Número de herdeiros
+          const numHLabel = document.createElement("label");
+          numHLabel.textContent = "Número de herdeiros: ";
+          const numHInput = document.createElement("input");
+          numHInput.type = "text";
+          numHInput.maxLength = 2;
+          numHInput.pattern = "\d*";
+          numHInput.className = "parte-num-herdeiros";
+          numHLabel.appendChild(numHInput);
+          additionalContainer.appendChild(numHLabel);
+
           const herdeirosContainer = document.createElement("div");
           herdeirosContainer.id = "herdeiros-container";
           const herdeirosLabel = document.createElement("label");
