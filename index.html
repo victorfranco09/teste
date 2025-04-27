@@ -447,6 +447,7 @@
 
       function renderAdditionalFields() {
         const statusValue = statusSelect.value;
+          contatoLabel.style.display = statusValue === "vivo" ? "block" : "none";
         additionalContainer.innerHTML = "";
 
         // Mostrar/ocultar Interesse
@@ -565,7 +566,7 @@
             // Atualizar emoji
             function updateEmoji() {
               let em = "";
-              if (assinouSelect.value === "sim") em += "✍️"; else em += "📄";
+              if (assinouSelect.value === "sim") em += "✍️";
               if (intSelect.value === "não") em += " 🙅‍♂️";
               emojiSpan.textContent = em;
             }
