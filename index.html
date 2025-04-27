@@ -349,78 +349,138 @@
       });
     }
 
-// --- Início do bloco substituído ---
-// título já inserido acima
-const basicFields = document.createElement("div");
-basicFields.className = "field-row";
+    function abrirModalParte(parte, index) {
+      // Implementação do modal para edição dos detalhes da parte
+      parteDetailsContainer.innerHTML = "";
+      
+      const title = document.createElement("h3");
+      title.textContent = "Detalhes da Parte - " + ((typeof parte === "object") ? parte.nome : parte);
+      parteDetailsContainer.appendChild(title);
+   // --- Campos básicos em linha ---
+   const basicFields = document.createElement("div");
+   basicFields.className = "field-row";
 
-// Status
-const statusLabel = document.createElement("label");
-statusLabel.className = "field-group";
-statusLabel.textContent = "Status: ";
-const statusSelect = document.createElement("select");
-statusSelect.className = "parte-status";
-statusSelect.dataset.index = index;
-["vivo","falecido"].forEach(opt => {
-  const o = document.createElement("option");
-  o.value = opt;
-  o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-  statusSelect.appendChild(o);
-});
-statusSelect.value = (parte.status||"vivo").toLowerCase();
-statusLabel.appendChild(statusSelect);
-basicFields.appendChild(statusLabel);
+   // Status
+   const statusLabel = document.createElement("label");
+   statusLabel.className = "field-group";
+   statusLabel.textContent = "Status: ";
+   const statusSelect = document.createElement("select");
+   statusSelect.className = "parte-status";
+   statusSelect.dataset.index = index;
+   ["vivo","falecido"].forEach(opt => {
+     const o = document.createElement("option");
+     o.value = opt;
+     o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
+     statusSelect.appendChild(o);
+   });
+   statusSelect.value = (parte.status||"vivo").toLowerCase();
+   statusLabel.appendChild(statusSelect);
+   basicFields.appendChild(statusLabel);
 
-// Interesse
-const interesseLabel = document.createElement("label");
-interesseLabel.className = "field-group";
-interesseLabel.textContent = "Interesse: ";
-const interesseSelect = document.createElement("select");
-interesseSelect.className = "parte-interesse";
-["sim","não"].forEach(opt => {
-  const o = document.createElement("option");
-  o.value = opt;
-  o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-  interesseSelect.appendChild(o);
-});
-interesseSelect.value = (parte.interesse||"não");
-interesseLabel.appendChild(interesseSelect);
-basicFields.appendChild(interesseLabel);
+   // Interesse
+   const interesseLabel = document.createElement("label");
+   interesseLabel.className = "field-group";
+   interesseLabel.textContent = "Interesse: ";
+   const interesseSelect = document.createElement("select");
+   interesseSelect.className = "parte-interesse";
+   ["sim","não"].forEach(opt => {
+     const o = document.createElement("option");
+     o.value = opt;
+     o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
+     interesseSelect.appendChild(o);
+   });
+   interesseSelect.value = (parte.interesse||"não");
+   interesseLabel.appendChild(interesseSelect);
+   basicFields.appendChild(interesseLabel);
 
-// LP
+   // LP
+   const lpLabel = document.createElement("label");
+   lpLabel.className = "field-group";
+   lpLabel.textContent = "LP: ";
+   const lpSelect = document.createElement("select");
+   lpSelect.className = "parte-lp";
+   ["sim","não"].forEach(opt => {
+     const o = document.createElement("option");
+     o.value = opt;
+     o.textContent = opt.toUpperCase();
+     lpSelect.appendChild(o);
+   });
+   lpSelect.value = (parte.lp||"não");
+   lpLabel.appendChild(lpSelect);
+   basicFields.appendChild(lpLabel);
+
+   // Contato (antes de Telefone/Email)
+   const contatoLabel = document.createElement("label");
+   contatoLabel.className = "field-group";
+   contatoLabel.textContent = "Contato: ";
+   const contatoSelect = document.createElement("select");
+   contatoSelect.className = "parte-contato";
+   ["sim","não"].forEach(opt => {
+     const o = document.createElement("option");
+     o.value = opt;
+     o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
+     contatoSelect.appendChild(o);
+   });
+   contatoSelect.value = (parte.contato||"não");
+   contatoLabel.appendChild(contatoSelect);
+   basicFields.appendChild(contatoLabel);
+
+   parteDetailsContainer.appendChild(basicFields);
+
+      
+      // Exemplo de campos para edição
+      const statusLabel = document.createElement("label");
+      statusLabel.textContent = "Status: ";
+      const statusSelect = document.createElement("select");
+      statusSelect.className = "parte-status";
+      statusSelect.dataset.index = index;
+      const optionVivo = document.createElement("option");
+      optionVivo.value = "vivo";
+      optionVivo.textContent = "Vivo";
+      const optionFalecido = document.createElement("option");
+      optionFalecido.value = "falecido";
+      optionFalecido.textContent = "Falecido";
+      let initialStatus = (parte.status) ? parte.status.toLowerCase() : "vivo";
+      optionVivo.selected = (initialStatus === "vivo");
+      optionFalecido.selected = (initialStatus === "falecido");
+      statusSelect.appendChild(optionVivo);
+      statusSelect.appendChild(optionFalecido);
+      statusLabel.appendChild(statusSelect);
+      parteDetailsContainer.appendChild(statusLabel);
+      // Campo INTERESSE global (parte)
+      const interesseLabel = document.createElement("label");
+      interesseLabel.id = "global-interesse-label";
+      interesseLabel.textContent = "Interesse: ";
+      const interesseSelect = document.createElement("select");
+      interesseSelect.id = "global-interesse-select";
+      interesseSelect.className = "parte-interesse";
+      ["sim","não"].forEach(opt => {
+        const o = document.createElement("option");
+        o.value = opt;
+        o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
+        interesseSelect.appendChild(o);
+      });
+      interesseSelect.value = (parte.interesse || "não");
+      interesseLabel.appendChild(interesseSelect);
+      parteDetailsContainer.appendChild(interesseLabel);
+
+
+
+// ——— Campo LP ———
 const lpLabel = document.createElement("label");
-lpLabel.className = "field-group";
 lpLabel.textContent = "LP: ";
 const lpSelect = document.createElement("select");
 lpSelect.className = "parte-lp";
 ["sim","não"].forEach(opt => {
   const o = document.createElement("option");
   o.value = opt;
-  o.textContent = opt.toUpperCase();
+  o.textContent = opt.toUpperCase(); // ou opt.charAt(0).toUpperCase()+…
   lpSelect.appendChild(o);
 });
-lpSelect.value = (parte.lp||"não").toLowerCase();
+lpSelect.value = (parte.lp || "não").toLowerCase();
 lpLabel.appendChild(lpSelect);
-basicFields.appendChild(lpLabel);
-
-// Contato (agora antes de Telefone/Email)
-const contatoLabel = document.createElement("label");
-contatoLabel.className = "field-group";
-contatoLabel.textContent = "Contato: ";
-const contatoSelect = document.createElement("select");
-contatoSelect.className = "parte-contato";
-["sim","não"].forEach(opt => {
-  const o = document.createElement("option");
-  o.value = opt;
-  o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-  contatoSelect.appendChild(o);
-});
-contatoSelect.value = (parte.contato||"não");
-contatoLabel.appendChild(contatoSelect);
-basicFields.appendChild(contatoLabel);
-
-parteDetailsContainer.appendChild(basicFields);
-// --- Fim do bloco substituído ---
+parteDetailsContainer.appendChild(lpLabel);
+      lpSelect.addEventListener("change", renderAdditionalFields);
       
       // Container para campos adicionais dinâmicos
       const additionalContainer = document.createElement("div");
