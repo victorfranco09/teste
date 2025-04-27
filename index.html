@@ -297,15 +297,58 @@
     }
 
     // Renderiza “Partes” com formatação: 'vivo' em azul, 'falecido' ou 'morto' em vermelho e os demais sem alteração.
+    
     function carregarPartes(partes) {
       detPartesList.innerHTML = "";
       partes.forEach((parte, index) => {
         const li = document.createElement("li");
+        // define nomeDisplay com base no status
+        const status = parte.status ? parte.status.toLowerCase() : "";
         let nomeDisplay = "";
+        if (status === "falecido" || status === "morto") {
+          nomeDisplay = `<span style="color: red;">${parte.nome}</span>`;
+        } else if (status === "vivo") {
+          nomeDisplay = `<span style="color: blue;">${parte.nome}</span>`;
+        } else {
+          nomeDisplay = parte.nome;
+        }
+
+        // emojis de flags
         let emojis = "";
         if (parte.lp && parte.lp.toLowerCase() === "sim") {
           emojis = " ⚖️🚫";
         } else if (parte.interesse && parte.interesse.toLowerCase() === "não") {
+          emojis = " 🙅‍♂️";
+        } else {
+          if (parte.assinou && parte.assinou.toLowerCase() === "sim") emojis += " ✍️";
+          if (parte.contato && parte.contato.toLowerCase() === "sim") emojis += " 🗣️";
+        }
+
+        li.innerHTML = nomeDisplay + emojis;
+
+        // renderiza herdeiros
+        if (status === "falecido" && Array.isArray(parte.herdeiros) && parte.herdeiros.length > 0) {
+          const herdeirosUL = document.createElement("ul");
+          herdeirosUL.classList.add("herdeiros-list");
+          parte.herdeiros.forEach(herdeiro => {
+            const liHerdeiro = document.createElement("li");
+            if (typeof herdeiro === "object" && herdeiro.hasOwnProperty("nome")) {
+              const herdeiroFlag = (herdeiro.assinou && herdeiro.assinou.toLowerCase() === "sim") ? "✍️" : "📄";
+              liHerdeiro.innerHTML = `${herdeiro.nome} ${herdeiroFlag}`;
+            } else {
+              liHerdeiro.textContent = herdeiro;
+            }
+            herdeirosUL.appendChild(liHerdeiro);
+          });
+          li.appendChild(herdeirosUL);
+        }
+
+        li.addEventListener("click", () => abrirModalParte(parte, index));
+        detPartesList.appendChild(li);
+      });
+    }
+
+else if (parte.interesse && parte.interesse.toLowerCase() === "não") {
           emojis = " 🙅‍♂️";
         } else {
           if (parte.assinou && parte.assinou.toLowerCase() === "sim") emojis += " ✍️";
