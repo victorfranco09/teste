@@ -406,7 +406,40 @@ parteDetailsContainer.appendChild(lpLabel);
       function renderAdditionalFields() {
         additionalContainer.innerHTML = "";
         
+        
         // Se LP = “sim”, mostra só Nº Processo, Advogado e Observações
+        if (lpSelect.value === "sim") {
+          const numProcLabel = document.createElement("label");
+          numProcLabel.textContent = "Nº Processo: ";
+          const numProcInput = document.createElement("input");
+          numProcInput.type = "text";
+          numProcInput.className = "parte-numero-processo";
+          numProcInput.value = parte.numero_processo || "";
+          numProcLabel.appendChild(numProcInput);
+          additionalContainer.appendChild(numProcLabel);
+
+          const advLabel = document.createElement("label");
+          advLabel.textContent = "Advogado: ";
+          const advInput = document.createElement("input");
+          advInput.type = "text";
+          advInput.className = "parte-advogado";
+          advInput.value = parte.advogado || "";
+          advLabel.appendChild(advInput);
+          additionalContainer.appendChild(advLabel);
+
+          const obsLabel = document.createElement("label");
+          obsLabel.textContent = "Observações: ";
+          const obsTextarea = document.createElement("textarea");
+          obsTextarea.className = "parte-observacoes";
+          obsTextarea.rows = 3;
+          obsTextarea.value = parte.observacoes || "";
+          obsLabel.appendChild(obsTextarea);
+          additionalContainer.appendChild(obsLabel);
+
+          return;
+        }
+
+// Se LP = “sim”, mostra só Nº Processo, Advogado e Observações
         if (lpSelect.value === "sim") {
           const numProcLabel = document.createElement("label");
           numProcLabel.textContent = "Nº Processo: ";
