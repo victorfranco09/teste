@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Painel de Pendências</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Espaçamento e organização dos campos em Detalhes da Parte */
+    #modal .modal-content .field-group { margin-bottom: 16px; }
+    #modal .modal-content label { display: block; margin-bottom: 6px; font-weight: 600; }
+    #modal .modal-content input,
+    #modal .modal-content select,
+    #modal .modal-content textarea { width: 100%; padding: 6px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 4px; }
+  </style>
+
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
