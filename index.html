@@ -486,23 +486,113 @@
             aLabel.appendChild(aSelect);
             additionalContainer.appendChild(aLabel);
           }
-        } else if (statusValue === "falecido") {
-          // Herdeiros (exemplo simples)
-          const hc = document.createElement("div");
-          hc.id = "herdeiros-container";
-          const hl = document.createElement("label");
-          hl.textContent = "Herdeiros:";
-          hc.appendChild(hl);
-          const hlst = document.createElement("div");
-          hlst.id = "herdeiros-list-modal";
-          hc.appendChild(hlst);
-          (parte.herdeiros || []).forEach(h => {
+        } 
+        else if (statusValue === "falecido") {
+          const herdeirosContainer = document.createElement("div");
+          herdeirosContainer.id = "herdeiros-container";
+          const herdeirosLabel = document.createElement("label");
+          herdeirosLabel.textContent = "Herdeiros:";
+          herdeirosContainer.appendChild(herdeirosLabel);
+          const herdeirosList = document.createElement("div");
+          herdeirosList.id = "herdeiros-list-modal";
+          herdeirosContainer.appendChild(herdeirosList);
+
+          let herdeirosData = [];
+          if (parte.herdeiros && Array.isArray(parte.herdeiros)) {
+            herdeirosData = parte.herdeiros;
+          } else if (typeof parte.herdeiros === "string" && parte.herdeiros.trim() !== "") {
+            herdeirosData = [parte.herdeiros];
+          } else {
+            herdeirosData = [""];
+          }
+
+          function addHerdeiroRow(value = "", assinou = "não", interesseVal = "não") {
             const row = document.createElement("div");
-            row.textContent = typeof h === "object" ? h.nome : h;
-            hlst.appendChild(row);
+            row.className = "herdeiro-row";
+
+            // Nome
+            const input = document.createElement("input");
+            input.type = "text";
+            input.className = "herdeiro-name";
+            input.value = value;
+            row.appendChild(input);
+
+            // Emoji indicador
+            const emojiSpan = document.createElement("span");
+            emojiSpan.className = "herdeiro-emoji";
+            emojiSpan.style.marginLeft = "8px";
+            row.appendChild(emojiSpan);
+
+            // Assinou?
+            const assinouLabel = document.createElement("label");
+            assinouLabel.textContent = "Assinou? ";
+            const assinouSelect = document.createElement("select");
+            assinouSelect.className = "herdeiro-assinou";
+            ["sim","não"].forEach(opt => {
+              const o = document.createElement("option");
+              o.value = opt;
+              o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
+              assinouSelect.appendChild(o);
+            });
+            assinouSelect.value = assinou;
+            assinouLabel.appendChild(assinouSelect);
+            row.appendChild(assinouLabel);
+
+            // Interesse?
+            const intLabel = document.createElement("label");
+            intLabel.textContent = "Interesse? ";
+            const intSelect = document.createElement("select");
+            intSelect.className = "herdeiro-interesse";
+            ["sim","não"].forEach(opt => {
+              const o = document.createElement("option");
+              o.value = opt;
+              o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
+              intSelect.appendChild(o);
+            });
+            intSelect.value = interesseVal;
+            intLabel.appendChild(intSelect);
+            row.appendChild(intLabel);
+
+            // Botão remover
+            if (herdeirosList.children.length > 0) {
+              const removeBtn = document.createElement("button");
+              removeBtn.type = "button";
+              removeBtn.textContent = "−";
+              removeBtn.addEventListener("click", () => herdeirosList.removeChild(row));
+              row.appendChild(removeBtn);
+            }
+
+            // Atualizar emoji
+            function updateEmoji() {
+              let em = "";
+              if (assinouSelect.value === "sim") em += "✍️"; else em += "📄";
+              if (intSelect.value === "não") em += " 🙅‍♂️";
+              emojiSpan.textContent = em;
+            }
+            assinouSelect.addEventListener("change", updateEmoji);
+            intSelect.addEventListener("change", updateEmoji);
+            updateEmoji();
+
+            herdeirosList.appendChild(row);
+          }
+
+          herdeirosData.forEach(item => {
+            if (typeof item === "object") {
+              addHerdeiroRow(item.nome || "", item.assinou || "não", item.interesse || "não");
+            } else {
+              addHerdeiroRow(item, "não", "não");
+            }
           });
-          additionalContainer.appendChild(hc);
+
+          const addBtn = document.createElement("button");
+          addBtn.type = "button";
+          addBtn.textContent = "+";
+          addBtn.addEventListener("click", () => addHerdeiroRow("", "não", "não"));
+          herdeirosContainer.appendChild(addBtn);
+
+          additionalContainer.appendChild(herdeirosContainer);
         }
+
 
         // Campos LP
         if (lpSelect.value === "sim") {
