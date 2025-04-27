@@ -604,7 +604,7 @@ salvarBtnModal.addEventListener("click", async function() {
     status:    newStatus,
     interesse: interesseValue,
     lp:        lpValue
-  // Se LP ativo, guarda também os três novos campos
+};// Se LP ativo, guarda também os três novos campos
   if (lpValue.toLowerCase() === "sim") {
     updatedPart.numero_processo_lp = parteDetailsContainer
       .querySelector(".parte-lp-numero-processo").value.trim();
@@ -614,7 +614,7 @@ salvarBtnModal.addEventListener("click", async function() {
       .querySelector(".parte-lp-observacoes").value.trim();
   }
 
-  };
+  ;
 
   if (newStatus === "vivo") {
     updatedPart.telefone   = parteDetailsContainer.querySelector(".parte-telefone").value;
