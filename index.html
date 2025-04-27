@@ -417,17 +417,16 @@ parteDetailsContainer.appendChild(lpLabel);
       parteDetailsContainer.appendChild(additionalContainer);
       
       function renderAdditionalFields() {
-        additionalContainer.innerHTML = "";
+        
+        const statusValue = statusSelect.value;
+additionalContainer.innerHTML = "";
         // Mostrar/ocultar interesse global
         const globalInteresse = document.getElementById("global-interesse-label");
         if (statusValue === "vivo") {
           globalInteresse.style.display = "block";
         } else {
           globalInteresse.style.display = "none";
-        }
-
-        const statusValue = statusSelect.value;
-        if (statusValue === "vivo") {
+        }if (statusValue === "vivo") {
           const telefoneLabel = document.createElement("label");
           telefoneLabel.textContent = "Telefone: ";
           const telefoneInput = document.createElement("input");
