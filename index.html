@@ -428,61 +428,6 @@
    parteDetailsContainer.appendChild(basicFields);
 
       
-      // Exemplo de campos para edição
-      const statusLabel = document.createElement("label");
-      statusLabel.textContent = "Status: ";
-      const statusSelect = document.createElement("select");
-      statusSelect.className = "parte-status";
-      statusSelect.dataset.index = index;
-      const optionVivo = document.createElement("option");
-      optionVivo.value = "vivo";
-      optionVivo.textContent = "Vivo";
-      const optionFalecido = document.createElement("option");
-      optionFalecido.value = "falecido";
-      optionFalecido.textContent = "Falecido";
-      let initialStatus = (parte.status) ? parte.status.toLowerCase() : "vivo";
-      optionVivo.selected = (initialStatus === "vivo");
-      optionFalecido.selected = (initialStatus === "falecido");
-      statusSelect.appendChild(optionVivo);
-      statusSelect.appendChild(optionFalecido);
-      statusLabel.appendChild(statusSelect);
-      parteDetailsContainer.appendChild(statusLabel);
-      // Campo INTERESSE global (parte)
-      const interesseLabel = document.createElement("label");
-      interesseLabel.id = "global-interesse-label";
-      interesseLabel.textContent = "Interesse: ";
-      const interesseSelect = document.createElement("select");
-      interesseSelect.id = "global-interesse-select";
-      interesseSelect.className = "parte-interesse";
-      ["sim","não"].forEach(opt => {
-        const o = document.createElement("option");
-        o.value = opt;
-        o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-        interesseSelect.appendChild(o);
-      });
-      interesseSelect.value = (parte.interesse || "não");
-      interesseLabel.appendChild(interesseSelect);
-      parteDetailsContainer.appendChild(interesseLabel);
-
-
-
-// ——— Campo LP ———
-const lpLabel = document.createElement("label");
-lpLabel.textContent = "LP: ";
-const lpSelect = document.createElement("select");
-lpSelect.className = "parte-lp";
-["sim","não"].forEach(opt => {
-  const o = document.createElement("option");
-  o.value = opt;
-  o.textContent = opt.toUpperCase(); // ou opt.charAt(0).toUpperCase()+…
-  lpSelect.appendChild(o);
-});
-lpSelect.value = (parte.lp || "não").toLowerCase();
-lpLabel.appendChild(lpSelect);
-parteDetailsContainer.appendChild(lpLabel);
-      lpSelect.addEventListener("change", renderAdditionalFields);
-      
-      // Container para campos adicionais dinâmicos
       const additionalContainer = document.createElement("div");
       additionalContainer.id = "additional-fields";
       parteDetailsContainer.appendChild(additionalContainer);
