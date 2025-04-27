@@ -1,9 +1,0 @@
-
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f2f4f7; margin: 0; padding: 0; }
-.hidden { display: none !important; }
-.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; }
-.modal-content { background: #fff; padding: 30px; border-radius: 8px; width: 90%; max-width: 600px; }
-.modal-content label { display: block; margin-top: 12px; font-weight: bold; }
-.herdeiro-row { display: flex; gap: 10px; margin-bottom: 10px; }
-.herdeiro-name { flex: 1; }
-.herdeiro-assinou { width: 100px; }
