@@ -539,7 +539,57 @@
       const sb = document.createElement("button");
       sb.textContent = "Salvar Parte"; sb.className = "parte-salvar";
       sb.dataset.index = index; parteDetailsContainer.appendChild(sb);
-      sb.addEventListener("click", async () => { /* lógica de update */ });
+      
+      sb.addEventListener("click", async () => {
+        // Montar objeto atualizado
+        const newStatus = statusSelect.value;
+        const interesseValue = interesseSelect.value;
+        const lpValue = lpSelect.value;
+        let updatedPart = {
+          status: newStatus,
+          interesse: interesseValue,
+          lp: lpValue
+        };
+        // Dados de vivo
+        if (newStatus === "vivo") {
+          updatedPart.telefone = document.querySelector("#additional-fields .parte-telefone").value.trim();
+          updatedPart.email = document.querySelector("#additional-fields .parte-email").value.trim();
+          updatedPart.contato = contatoSelect.value;
+          updatedPart.assinou = contatoSelect.value === "sim"
+            ? document.querySelector("#additional-fields .parte-assinou").value
+            : "não";
+          updatedPart.herdeiros = [];
+        } else if (newStatus === "falecido") {
+          // Coletar lista de herdeiros
+          const rows = document.querySelectorAll("#herdeiros-list-modal .herdeiro-row");
+          updatedPart.herdeiros = Array.from(rows).map(row => {
+            return {
+              nome: row.querySelector(".herdeiro-name").value,
+              assinou: row.querySelector(".herdeiro-assinou").value,
+              interesse: row.querySelector(".herdeiro-interesse").value
+            };
+          });
+        }
+        // Dados de LP
+        if (lpValue === "sim") {
+          updatedPart.numero_processo_lp = document.querySelector(".parte-lp-numero-processo").value.trim();
+          updatedPart.advogado_lp = document.querySelector(".parte-lp-advogado").value.trim();
+          updatedPart.observacoes_lp = document.querySelector(".parte-lp-observacoes").value.trim();
+        }
+        // Nome
+        updatedPart.nome = typeof parte === "object" ? parte.nome : parte;
+
+        // Atualizar no Firestore
+        const docRef = db.collection("pendencias").doc(currentDocId);
+        const docSnap = await docRef.get();
+        let partesArr = docSnap.data().partes || [];
+        partesArr[index] = updatedPart;
+        await docRef.update({ partes: partesArr });
+        alert("Informações da parte atualizadas!");
+        modal.classList.add("hidden");
+        carregarDetalhes(currentDocId);
+      });
+
 
       modal.classList.remove("hidden");
     }
