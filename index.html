@@ -302,45 +302,44 @@
       partes.forEach((parte, index) => {
         const li = document.createElement("li");
         let nomeDisplay = "";
-        let flagsHTML = "";
+        let emojis = "";
+        if (parte.lp && parte.lp.toLowerCase() === "sim") {
+          emojis = " ⚖️🚫";
+        } else if (parte.interesse && parte.interesse.toLowerCase() === "não") {
+          emojis = " 🙅‍♂️";
+        } else {
+          if (parte.assinou && parte.assinou.toLowerCase() === "sim") emojis += " ✍️";
+          if (parte.contato && parte.contato.toLowerCase() === "sim") emojis += " 🗣️";
+        }
+        li.innerHTML = nomeDisplay + emojis;
 
         // Caso a parte seja um objeto com a propriedade "nome"
         if (parte && typeof parte === "object" && parte.hasOwnProperty("nome")) {
           const status = parte.status ? parte.status.toLowerCase() : "";
-          if (status === "falecido" || status === "morto") {
-            nomeDisplay = `<span style="color: red;">${parte.nome}</span>`;
-          } else if (status === "vivo") {
-            nomeDisplay = `<span style="color: blue;">${parte.nome}</span>`;
-            if (parte.assinou && parte.assinou.toLowerCase() === "sim") {
-              flagsHTML = `<span class="flag flag-acordo">✍️</span>`;
-            } else {
-              const contatoFlag = (parte.contato && parte.contato.toLowerCase() === "sim")
-                                  ? `<span class="flag flag-contato">🗣️</span>`
-                                  : `<span class="flag flag-contato">📞</span>`;
-              const acordoFlag = (parte.assinou && parte.assinou.toLowerCase() === "sim")
-                                  ? `<span class="flag flag-acordo">✍️</span>`
-                                  : `<span class="flag flag-acordo">📄</span>`;
-              flagsHTML = `${contatoFlag} ${acordoFlag}`;
-            }
-          } else {
-            nomeDisplay = parte.nome;
-            if (parte.assinou && parte.assinou.toLowerCase() === "sim") {
-              flagsHTML = `<span class="flag flag-acordo">✍️</span>`;
-            } else {
-              const contatoFlag = (parte.contato && parte.contato.toLowerCase() === "sim")
-                                  ? `<span class="flag flag-contato">🗣️</span>`
-                                  : `<span class="flag flag-contato">📞</span>`;
-              const acordoFlag = (parte.assinou && parte.assinou.toLowerCase() === "sim")
-                                  ? `<span class="flag flag-acordo">✍️</span>`
-                                  : `<span class="flag flag-acordo">📄</span>`;
-              flagsHTML = `${contatoFlag} ${acordoFlag}`;
-            }
-          }
-        } else if (typeof parte === "string") {
-          nomeDisplay = parte;
-        }
+// Novo bloco de flags: LP → ⚖️🚫, Interesse → 🙅‍♂️, senão só ✍️ e 🗣️
+let emojis = "";
 
-        li.innerHTML = nomeDisplay + " " + flagsHTML;
+// 1) LP = sim → só ⚖️🚫
+if (parte.lp && parte.lp.toLowerCase() === "sim") {
+  emojis = " ⚖️🚫";
+
+// 2) Interesse = não (e LP ≠ sim) → só 🙅‍♂️
+} else if (parte.interesse && parte.interesse.toLowerCase() === "não") {
+  emojis = " 🙅‍♂️";
+
+// 3) Caso contrário → mostra apenas ✍️ e 🗣️, se aplicarem
+} else {
+  if (parte.assinou && parte.assinou.toLowerCase() === "sim") {
+    emojis += " ✍️";
+  }
+  if (parte.contato && parte.contato.toLowerCase() === "sim") {
+    emojis += " 🗣️";
+  }
+}
+
+li.innerHTML = nomeDisplay + emojis;
+
+        
 
         // Se for objeto com status "falecido"/"morto" e tiver herdeiros, adiciona uma lista aninhada
         if (
@@ -411,7 +410,7 @@ interesseSelect.className = "parte-interesse";
   interesseSelect.appendChild(o);
 });
 // define valor inicial a partir de parte.interesse (se existir)
-interesseSelect.value = (parte.interesse || "não").toLowerCase();
+interesseSelect.value = (parte.interesse || "sim").toLowerCase();
 interesseLabel.appendChild(interesseSelect);
 parteDetailsContainer.appendChild(interesseLabel);
 
