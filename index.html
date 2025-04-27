@@ -525,39 +525,6 @@ additionalContainer.innerHTML = "";
           } else {
             herdeirosData = [""];
           }
-           // Campos dinâmicos LP
-           if (lpSelect.value.toLowerCase() === "sim") {
-             // Nº Processo (LP)
-             const lpProcLabel = document.createElement("label");
-             lpProcLabel.textContent = "Nº Processo (LP): ";
-             const lpProcInput = document.createElement("input");
-             lpProcInput.type = "text";
-             lpProcInput.className = "parte-lp-numero-processo";
-             lpProcInput.value = parte.numero_processo_lp || "";
-             lpProcLabel.appendChild(lpProcInput);
-             additionalContainer.appendChild(lpProcLabel);
-
-             // Nome do Advogado (LP)
-             const lpAdvLabel = document.createElement("label");
-             lpAdvLabel.textContent = "Nome do Advogado (LP): ";
-             const lpAdvInput = document.createElement("input");
-             lpAdvInput.type = "text";
-             lpAdvInput.className = "parte-lp-advogado";
-             lpAdvInput.value = parte.advogado_lp || "";
-             lpAdvLabel.appendChild(lpAdvInput);
-             additionalContainer.appendChild(lpAdvLabel);
-
-             // Observações (LP)
-             const lpObsLabel = document.createElement("label");
-             lpObsLabel.textContent = "Observações (LP): ";
-             const lpObsTextarea = document.createElement("textarea");
-             lpObsTextarea.className = "parte-lp-observacoes";
-             lpObsTextarea.rows = 3;
-             lpObsTextarea.value = parte.observacoes_lp || "";
-             lpObsLabel.appendChild(lpObsTextarea);
-             additionalContainer.appendChild(lpObsLabel);
-           }
-
           
           function addHerdeiroRow(value = "", assinou = "não", interesse = "não") {
           const row = document.createElement("div");
@@ -647,37 +614,6 @@ additionalContainer.innerHTML = "";
           
           additionalContainer.appendChild(herdeirosContainer);
         }
-        // Campos dinâmicos LP
-        if (lpSelect.value.toLowerCase() === "sim") {
-          // Nº Processo (LP)
-          const lpProcLabel = document.createElement("label");
-          lpProcLabel.textContent = "Nº Processo (LP): ";
-          const lpProcInput = document.createElement("input");
-          lpProcInput.type = "text";
-          lpProcInput.className = "parte-lp-numero-processo";
-          lpProcInput.value = parte.numero_processo_lp || "";
-          lpProcLabel.appendChild(lpProcInput);
-          additionalContainer.appendChild(lpProcLabel);
-
-          // Nome do Advogado (LP)
-          const lpAdvLabel = document.createElement("label");
-          lpAdvLabel.textContent = "Nome do Advogado (LP): ";
-          const lpAdvInput = document.createElement("input");
-          lpAdvInput.type = "text";
-          lpAdvInput.className = "parte-lp-advogado";
-          lpAdvInput.value = parte.advogado_lp || "";
-          lpAdvLabel.appendChild(lpAdvInput);
-          additionalContainer.appendChild(lpAdvLabel);
-
-          // Observações (LP)
-          const lpObsLabel = document.createElement("label");
-          lpObsLabel.textContent = "Observações (LP): ";
-          const lpObsTextarea = document.createElement("textarea");
-          lpObsTextarea.className = "parte-lp-observacoes";
-          lpObsTextarea.rows = 3;
-          lpObsTextarea.value = parte.observacoes_lp || "";
-          lpObsLabel.appendChild(lpObsTextarea);
-          additionalContainer.appendChild(lpObsLabel);
         }
 
       }
@@ -685,7 +621,6 @@ additionalContainer.innerHTML = "";
       renderAdditionalFields();
       
       statusSelect.addEventListener("change", renderAdditionalFields);
-       lpSelect.addEventListener("change", renderAdditionalFields);
       
       const salvarBtnModal = document.createElement("button");
       salvarBtnModal.textContent = "Salvar Parte";
