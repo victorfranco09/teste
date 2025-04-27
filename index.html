@@ -302,7 +302,6 @@
       detPartesList.innerHTML = "";
       partes.forEach((parte, index) => {
         const li = document.createElement("li");
-        // define nomeDisplay com base no status
         const status = parte.status ? parte.status.toLowerCase() : "";
         let nomeDisplay = "";
         if (status === "falecido" || status === "morto") {
@@ -312,8 +311,6 @@
         } else {
           nomeDisplay = parte.nome;
         }
-
-        // emojis de flags
         let emojis = "";
         if (parte.lp && parte.lp.toLowerCase() === "sim") {
           emojis = " ⚖️🚫";
@@ -323,10 +320,7 @@
           if (parte.assinou && parte.assinou.toLowerCase() === "sim") emojis += " ✍️";
           if (parte.contato && parte.contato.toLowerCase() === "sim") emojis += " 🗣️";
         }
-
         li.innerHTML = nomeDisplay + emojis;
-
-        // renderiza herdeiros
         if (status === "falecido" && Array.isArray(parte.herdeiros) && parte.herdeiros.length > 0) {
           const herdeirosUL = document.createElement("ul");
           herdeirosUL.classList.add("herdeiros-list");
@@ -342,7 +336,6 @@
           });
           li.appendChild(herdeirosUL);
         }
-
         li.addEventListener("click", () => abrirModalParte(parte, index));
         detPartesList.appendChild(li);
       });
