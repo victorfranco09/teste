@@ -361,8 +361,10 @@
     }
 
     
-    function abrirModalParte(parte, index) {
+    async function abrirModalParte(parte, index) {
+      // limpa o container
       parteDetailsContainer.innerHTML = "";
+
       // bloco permanente de Última Edição
       const lastEditBlock = document.createElement("small");
       lastEditBlock.className = "last-edit";
@@ -374,375 +376,57 @@
         lastEditBlock.textContent = `ÚLTIMA EDIÇÃO: ${parte.ultimaEdicao}`;
       }
       parteDetailsContainer.appendChild(lastEditBlock);
+
       // Título
       const title = document.createElement("h3");
       const nomeTitle = typeof parte === "object" ? parte.nome : parte;
       const cpfTitle = (typeof parte === "object" && parte.cpf) ? parte.cpf : "";
-      title.textContent = `Detalhes da Parte - ${nomeTitle}${cpfTitle ? " – "+cpfTitle : ""}`;
+      title.textContent = `Detalhes da Parte - ${nomeTitle}${cpfTitle ? " – " + cpfTitle : ""}`;
       parteDetailsContainer.appendChild(title);
 
-      // Campos básicos em linha
-      const basicFields = document.createElement("div");
-      basicFields.className = "field-row";
+      // --- Insira aqui seu código de criação dos campos (status, interesse, LP, etc.) ---
+      // ...
 
-      // Status
-      const statusLabel = document.createElement("label");
-      statusLabel.className = "field-group";
-      statusLabel.textContent = "Status:";
-      const statusSelect = document.createElement("select");
-      statusSelect.className = "parte-status";
-      statusSelect.dataset.index = index;
-      ["vivo","falecido"].forEach(opt => {
-        const o = document.createElement("option");
-        o.value = opt;
-        o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-        statusSelect.appendChild(o);
-      });
-      statusSelect.value = (parte.status||"vivo").toLowerCase();
-      statusLabel.appendChild(statusSelect);
-      basicFields.appendChild(statusLabel);
+      // Botão Salvar Parte
+      const saveContainer = document.createElement("div");
+      saveContainer.style.display        = "flex";
+      saveContainer.style.justifyContent = "flex-start";
+      saveContainer.style.alignItems     = "center";
+      saveContainer.style.marginTop      = "16px";
 
-      // Interesse
-      const interesseLabel = document.createElement("label");
-      interesseLabel.className = "field-group";
-      interesseLabel.id = "global-interesse-label";
-      interesseLabel.textContent = "Interesse:";
-      const interesseSelect = document.createElement("select");
-      interesseSelect.className = "parte-interesse";
-      ["sim","não"].forEach(opt => {
-        const o = document.createElement("option");
-        o.value = opt;
-        o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-        interesseSelect.appendChild(o);
-      });
-      interesseSelect.value = (parte.interesse||"não");
-      interesseLabel.appendChild(interesseSelect);
-      basicFields.appendChild(interesseLabel);
+      const sb = document.createElement("button");
+      sb.textContent   = "Salvar Parte";
+      sb.className     = "parte-salvar";
+      sb.dataset.index = index;
 
-      // LP
-      const lpLabel = document.createElement("label");
-      lpLabel.className = "field-group";
-      lpLabel.textContent = "LP:";
-      const lpSelect = document.createElement("select");
-      lpSelect.className = "parte-lp";
-      ["sim","não"].forEach(opt => {
-        const o = document.createElement("option");
-        o.value = opt;
-        o.textContent = opt.toUpperCase();
-        lpSelect.appendChild(o);
-      });
-      lpSelect.value = (parte.lp||"não").toLowerCase();
-      lpLabel.appendChild(lpSelect);
-      basicFields.appendChild(lpLabel);
+      saveContainer.appendChild(sb);
+      parteDetailsContainer.appendChild(saveContainer);
 
-      // Contato antes de Telefone/Email
-      const contatoLabel = document.createElement("label");
-      contatoLabel.className = "field-group";
-      contatoLabel.textContent = "Contato:";
-      const contatoSelect = document.createElement("select");
-      contatoSelect.className = "parte-contato";
-      ["sim","não"].forEach(opt => {
-        const o = document.createElement("option");
-        o.value = opt;
-        o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-        contatoSelect.appendChild(o);
-      });
-      contatoSelect.value = (parte.contato||"não");
-      contatoLabel.appendChild(contatoSelect);
-      basicFields.appendChild(contatoLabel);
-
-      parteDetailsContainer.appendChild(basicFields);
-
-      // Container para campos adicionais
-      const additionalContainer = document.createElement("div");
-      additionalContainer.id = "additional-fields";
-      parteDetailsContainer.appendChild(additionalContainer);
-
-      function renderAdditionalFields() {
-        const statusValue = statusSelect.value;
-          contatoLabel.style.display = statusValue === "vivo" ? "block" : "none";
-        additionalContainer.innerHTML = "";
-
-        // Mostrar/ocultar Interesse
-        const gi = document.getElementById("global-interesse-label");
-        if (gi) gi.style.display = statusValue === "vivo" ? "block" : "none";
-
-        if (statusValue === "vivo") {
-          // Telefone
-          const tLabel = document.createElement("label");
-          tLabel.textContent = "Telefone:";
-          const tInput = document.createElement("input");
-          tInput.type = "text"; tInput.className = "parte-telefone";
-          tInput.value = parte.telefone||""; tLabel.appendChild(tInput);
-          additionalContainer.appendChild(tLabel);
-
-          // Email
-          const eLabel = document.createElement("label");
-          eLabel.textContent = "Email:";
-          const eInput = document.createElement("input");
-          eInput.type = "text"; eInput.className = "parte-email";
-          eInput.value = parte.email||""; eLabel.appendChild(eInput);
-          additionalContainer.appendChild(eLabel);
-
-          // Assinou Acordo
-          if (contatoSelect.value === "sim") {
-            const aLabel = document.createElement("label");
-            aLabel.textContent = "Assinou Acordo:";
-            const aSelect = document.createElement("select");
-            aSelect.className = "parte-assinou";
-            ["sim","não"].forEach(opt => {
-              const o = document.createElement("option");
-              o.value = opt;
-              o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-              aSelect.appendChild(o);
-            });
-            aSelect.value = parte.assinou||"não";
-            aLabel.appendChild(aSelect);
-            additionalContainer.appendChild(aLabel);
-          }
-        } 
-        else if (statusValue === "falecido") {
-          // Deixou bens?
-          const bensLabel = document.createElement("label");
-          bensLabel.textContent = "Deixou bens?: ";
-          const bensSelect = document.createElement("select");
-          bensSelect.className = "parte-deixou-bens";
-          ["sim","não"].forEach(opt => {
-            const o = document.createElement("option");
-            o.value = opt;
-            o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-            bensSelect.appendChild(o);
-          });
-          bensSelect.value = (parte.deixou_bens || "não").toLowerCase();
-          bensLabel.appendChild(bensSelect);
-          additionalContainer.appendChild(bensLabel);
-
-          // Número de herdeiros
-          const numHLabel = document.createElement("label");
-          numHLabel.textContent = "Número de herdeiros: ";
-          const numHInput = document.createElement("input");
-          numHInput.type = "text";
-          numHInput.maxLength = 2;
-          numHInput.pattern = "\d*";
-          numHInput.className = "parte-num-herdeiros";
-          numHLabel.appendChild(numHInput);
-          additionalContainer.appendChild(numHLabel);
-
-          const herdeirosContainer = document.createElement("div");
-          herdeirosContainer.id = "herdeiros-container";
-          const herdeirosLabel = document.createElement("label");
-          herdeirosLabel.textContent = "Herdeiros:";
-          herdeirosContainer.appendChild(herdeirosLabel);
-          const herdeirosList = document.createElement("div");
-          herdeirosList.id = "herdeiros-list-modal";
-          herdeirosContainer.appendChild(herdeirosList);
-
-          let herdeirosData = [];
-          if (parte.herdeiros && Array.isArray(parte.herdeiros)) {
-            herdeirosData = parte.herdeiros;
-          } else if (typeof parte.herdeiros === "string" && parte.herdeiros.trim() !== "") {
-            herdeirosData = [parte.herdeiros];
-          } else {
-            herdeirosData = [""];
-          }
-
-          function addHerdeiroRow(value = "", assinou = "não", interesseVal = "não") {
-            const row = document.createElement("div");
-            row.className = "herdeiro-row";
-
-            // Nome
-            const input = document.createElement("input");
-            input.type = "text";
-            input.className = "herdeiro-name";
-            input.value = value;
-            row.appendChild(input);
-
-            // Emoji indicador
-            const emojiSpan = document.createElement("span");
-            emojiSpan.className = "herdeiro-emoji";
-            emojiSpan.style.marginLeft = "8px";
-            row.appendChild(emojiSpan);
-
-            // Assinou?
-            const assinouLabel = document.createElement("label");
-            assinouLabel.textContent = "Assinou? ";
-            const assinouSelect = document.createElement("select");
-            assinouSelect.className = "herdeiro-assinou";
-            ["sim","não"].forEach(opt => {
-              const o = document.createElement("option");
-              o.value = opt;
-              o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-              assinouSelect.appendChild(o);
-            });
-            assinouSelect.value = assinou;
-            assinouLabel.appendChild(assinouSelect);
-            row.appendChild(assinouLabel);
-
-            // Interesse?
-            const intLabel = document.createElement("label");
-            intLabel.textContent = "Interesse? ";
-            const intSelect = document.createElement("select");
-            intSelect.className = "herdeiro-interesse";
-            ["sim","não"].forEach(opt => {
-              const o = document.createElement("option");
-              o.value = opt;
-              o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-              intSelect.appendChild(o);
-            });
-            intSelect.value = interesseVal;
-            intLabel.appendChild(intSelect);
-            row.appendChild(intLabel);
-
-            // Botão remover
-            if (herdeirosList.children.length > 0) {
-              const removeBtn = document.createElement("button");
-              removeBtn.type = "button";
-              removeBtn.textContent = "−";
-              removeBtn.addEventListener("click", () => herdeirosList.removeChild(row));
-              row.appendChild(removeBtn);
-            }
-
-            // Atualizar emoji
-            function updateEmoji() {
-              let em = "";
-              if (assinouSelect.value === "sim") em += "✍️";
-              if (intSelect.value === "não") em += " 🙅‍♂️";
-              emojiSpan.textContent = em;
-            }
-            assinouSelect.addEventListener("change", updateEmoji);
-            intSelect.addEventListener("change", updateEmoji);
-            updateEmoji();
-
-            herdeirosList.appendChild(row);
-          }
-
-          herdeirosData.forEach(item => {
-            if (typeof item === "object") {
-              addHerdeiroRow(item.nome || "", item.assinou || "não", item.interesse || "não");
-            } else {
-              addHerdeiroRow(item, "não", "não");
-            }
-          });
-
-          const addBtn = document.createElement("button");
-          addBtn.type = "button";
-          addBtn.textContent = "+";
-          addBtn.addEventListener("click", () => addHerdeiroRow("", "não", "não"));
-          herdeirosContainer.appendChild(addBtn);
-
-          additionalContainer.appendChild(herdeirosContainer);
-        }
-
-
-        // Campos LP
-        if (lpSelect.value === "sim") {
-          const lp1 = document.createElement("label");
-          lp1.textContent = "Nº Processo (LP):";
-          const lp1in = document.createElement("input");
-          lp1in.type = "text"; lp1in.className = "parte-lp-numero-processo";
-          lp1in.value = parte.numero_processo_lp||""; lp1.appendChild(lp1in);
-          additionalContainer.appendChild(lp1);
-
-          const lp2 = document.createElement("label");
-          lp2.textContent = "Nome do Advogado (LP):";
-          const lp2in = document.createElement("input");
-          lp2in.type = "text"; lp2in.className = "parte-lp-advogado";
-          lp2in.value = parte.advogado_lp||""; lp2.appendChild(lp2in);
-          additionalContainer.appendChild(lp2);
-
-          const lp3 = document.createElement("label");
-          lp3.textContent = "Observações (LP):";
-          const lp3ta = document.createElement("textarea");
-          lp3ta.className = "parte-lp-observacoes"; lp3ta.rows = 3;
-          lp3ta.value = parte.observacoes_lp||""; lp3.appendChild(lp3ta);
-          additionalContainer.appendChild(lp3);
-        }
-      }
-
-      // Listeners
-      [statusSelect, interesseSelect, lpSelect, contatoSelect].forEach(el => el.addEventListener("change", renderAdditionalFields));
-
-      // Primeira renderização
-      renderAdditionalFields();
-
-      // Botão Salvar
-
-// Botão Salvar Parte
-const saveContainer = document.createElement("div");
-saveContainer.style.display = "flex";
-saveContainer.style.justifyContent = "flex-start";
-saveContainer.style.alignItems = "center";
-saveContainer.style.marginTop = "16px";
-
-// botão Salvar Parte
-const sb = document.createElement("button");
-sb.textContent = "Salvar Parte";
-sb.className = "parte-salvar";
-sb.dataset.index = index;
-
-// monta e anexa
-saveContainer.appendChild(sb);
-parteDetailsContainer.appendChild(saveContainer);
-
-// elemento last-edit permanente
-
-
-      
       sb.addEventListener("click", async () => {
-      sb.addEventListener("click", async () => {
-        // Montar objeto atualizado
-        const newStatus = statusSelect.value;
-        const interesseValue = interesseSelect.value;
-        const lpValue = lpSelect.value;
-        let updatedPart = {
-          status: newStatus,
-          interesse: interesseValue,
-          lp: lpValue
-        };
-        // Dados de vivo
-        if (newStatus === "vivo") {
-          updatedPart.telefone = document.querySelector("#additional-fields .parte-telefone").value.trim();
-          updatedPart.email = document.querySelector("#additional-fields .parte-email").value.trim();
-          updatedPart.contato = contatoSelect.value;
-          updatedPart.assinou = contatoSelect.value === "sim"
-            ? document.querySelector("#additional-fields .parte-assinou").value
-            : "não";
-          updatedPart.herdeiros = [];
-        } else if (newStatus === "falecido") {
-          // Coletar lista de herdeiros
-          const rows = document.querySelectorAll("#herdeiros-list-modal .herdeiro-row");
-          updatedPart.herdeiros = Array.from(rows).map(row => {
-            return {
-              nome: row.querySelector(".herdeiro-name").value,
-              assinou: row.querySelector(".herdeiro-assinou").value,
-              interesse: row.querySelector(".herdeiro-interesse").value
-            };
-          });
-        }
-        // Dados de LP
-        if (lpValue === "sim") {
-          updatedPart.numero_processo_lp = document.querySelector(".parte-lp-numero-processo").value.trim();
-          updatedPart.advogado_lp = document.querySelector(".parte-lp-advogado").value.trim();
-          updatedPart.observacoes_lp = document.querySelector(".parte-lp-observacoes").value.trim();
-        }
-        // Nome
-        updatedPart.nome = typeof parte === "object" ? parte.nome : parte;
+        // MONTA o objeto updatedPart (status, interesse, lp, herdeiros, etc.)
+        // ... seu código existente para montar updatedPart ...
 
-        // Atualizar no Firestore
-        const docRef = db.collection("pendencias").doc(currentDocId);
+        // persiste usuário e data da última edição
+        const usuario = nomesPorEmail[auth.currentUser.email] || auth.currentUser.email;
+        const hoje    = new Date().toLocaleDateString("pt-BR");
+        updatedPart.ultimaEdicao = `${usuario} - ${hoje}`;
+
+        // atualiza no Firestore
+        const docRef  = db.collection("pendencias").doc(currentDocId);
         const docSnap = await docRef.get();
         let partesArr = docSnap.data().partes || [];
         partesArr[index] = updatedPart;
         await docRef.update({ partes: partesArr });
 
-const usuario = nomesPorEmail[auth.currentUser.email] || auth.currentUser.email;
-const hoje   = new Date().toLocaleDateString("pt-BR");
+        // atualiza o texto do bloco sem fechar o modal
+        lastEditBlock.textContent = `ÚLTIMA EDIÇÃO: ${updatedPart.ultimaEdicao}`;
 
         carregarDetalhes(currentDocId);
       });
 
-
-  }
+      // mostra o modal
+      modal.classList.remove("hidden");
+    }
 modal.classList.remove("hidden");
     }
 
