@@ -374,7 +374,6 @@
         lastEditBlock.textContent = `ÚLTIMA EDIÇÃO: ${parte.ultimaEdicao}`;
       }
       parteDetailsContainer.appendChild(lastEditBlock);
-
       // Título
       const title = document.createElement("h3");
       const nomeTitle = typeof parte === "object" ? parte.nome : parte;
@@ -690,6 +689,7 @@ parteDetailsContainer.appendChild(saveContainer);
 
       
       sb.addEventListener("click", async () => {
+      sb.addEventListener("click", async () => {
         // Montar objeto atualizado
         const newStatus = statusSelect.value;
         const interesseValue = interesseSelect.value;
@@ -735,14 +735,15 @@ parteDetailsContainer.appendChild(saveContainer);
         partesArr[index] = updatedPart;
         await docRef.update({ partes: partesArr });
 
-// — começa adição —
 const usuario = nomesPorEmail[auth.currentUser.email] || auth.currentUser.email;
 const hoje   = new Date().toLocaleDateString("pt-BR");
-lastEditBlock.textContent = `ÚLTIMA EDIÇÃO: ${usuario} - ${hoje}`;
-
 
         carregarDetalhes(currentDocId);
-      });modal.classList.remove("hidden");
+      });
+
+
+  }
+modal.classList.remove("hidden");
     }
 
 
@@ -773,6 +774,9 @@ lastEditBlock.textContent = `ÚLTIMA EDIÇÃO: ${usuario} - ${hoje}`;
         status: document.getElementById("det-status").value,
         comentarios: document.getElementById("det-comentarios").value.trim()
       };
+        const usuario = nomesPorEmail[auth.currentUser.email] || auth.currentUser.email;
+        const hoje    = new Date().toLocaleDateString("pt-BR");
+        updatedPart.ultimaEdicao = `${usuario} - ${hoje}`;
       await db.collection("pendencias").doc(currentDocId).update(dados);
       salvarMsg.textContent = "Atualizado com sucesso!";
       carregarPendencias();
