@@ -655,13 +655,13 @@
       renderAdditionalFields();
 
       // Botão Salvar
-// — início substituição —
+
+// Botão Salvar Parte
 const saveContainer = document.createElement("div");
 saveContainer.style.display = "flex";
-    saveContainer.style.justifyContent = "flex-start";
-    saveContainer.style.alignItems = "center";
-    saveContainer.style.marginTop = "16px";
+saveContainer.style.justifyContent = "flex-start";
 saveContainer.style.alignItems = "center";
+saveContainer.style.marginTop = "16px";
 
 // botão Salvar Parte
 const sb = document.createElement("button");
@@ -669,20 +669,8 @@ sb.textContent = "Salvar Parte";
 sb.className = "parte-salvar";
 sb.dataset.index = index;
 
-// span para última edição
-const lastEdit = document.createElement("small");
-lastEdit.className = "last-edit";
-lastEdit.style.marginLeft = "10px";
-lastEdit.style.fontStyle = "italic";
-lastEdit.style.fontSize = "0.8em";
-// inicialmente vazio; só será preenchido após salvar
-if (parte.ultimaEdicao) {
-        lastEditBlock.textContent = `ÚLTIMA EDIÇÃO: ${parte.ultimaEdicao}`;
-      }
-
-// monta o container e anexa tudo
+// monta e anexa
 saveContainer.appendChild(sb);
-
 parteDetailsContainer.appendChild(saveContainer);
 
 // elemento last-edit permanente
@@ -698,8 +686,7 @@ if (parte.ultimaEdicao) {
   lastEditBlock.textContent = "";
 }
 parteDetailsContainer.appendChild(lastEditBlock);
-
-// — fim substituição —
+ —
 
       
       sb.addEventListener("click", async () => {
