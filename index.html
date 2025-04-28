@@ -682,8 +682,22 @@ if (parte.ultimaEdicao) {
 
 // monta o container e anexa tudo
 saveContainer.appendChild(sb);
-saveContainer.appendChild(lastEdit);
+
 parteDetailsContainer.appendChild(saveContainer);
+
+// elemento last-edit permanente
+const lastEdit = document.createElement("small");
+lastEdit.className = "last-edit";
+lastEdit.style.display = "block";
+lastEdit.style.fontStyle = "italic";
+lastEdit.style.fontSize = "0.8em";
+lastEdit.style.marginTop = "8px";
+if (parte.ultimaEdicao) {
+  lastEdit.textContent = `ÚLTIMA EDIÇÃO: ${parte.ultimaEdicao}`;
+} else {
+  lastEdit.textContent = "";
+}
+parteDetailsContainer.appendChild(lastEdit);
 // — fim substituição —
 
       
