@@ -739,24 +739,10 @@ parteDetailsContainer.appendChild(saveContainer);
 const usuario = nomesPorEmail[auth.currentUser.email] || auth.currentUser.email;
 const hoje   = new Date().toLocaleDateString("pt-BR");
 lastEditBlock.textContent = `ÚLTIMA EDIÇÃO: ${usuario} - ${hoje}`;
-// — fim adição —
+
 
         carregarDetalhes(currentDocId);
-      });
-
-
-        // Insere bloco de Última Edição dinamicamente
-  const lastEditBlock = document.createElement("small");
-  lastEditBlock.className = "last-edit";
-  lastEditBlock.style.display = "block";
-  lastEditBlock.style.fontStyle = "italic";
-  lastEditBlock.style.fontSize = "0.8em";
-  lastEditBlock.style.marginTop = "8px";
-  if (parte.ultimaEdicao) {
-    lastEditBlock.textContent = `ÚLTIMA EDIÇÃO: ${parte.ultimaEdicao}`;
-  }
-  parteDetailsContainer.appendChild(lastEditBlock);
-modal.classList.remove("hidden");
+      });modal.classList.remove("hidden");
     }
 
 
