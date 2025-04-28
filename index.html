@@ -658,6 +658,9 @@
 // — início substituição —
 const saveContainer = document.createElement("div");
 saveContainer.style.display = "flex";
+    saveContainer.style.justifyContent = "flex-end";
+    saveContainer.style.alignItems = "center";
+    saveContainer.style.marginTop = "16px";
 saveContainer.style.alignItems = "center";
 
 // botão Salvar Parte
@@ -673,7 +676,9 @@ lastEdit.style.marginLeft = "10px";
 lastEdit.style.fontStyle = "italic";
 lastEdit.style.fontSize = "0.8em";
 // inicialmente vazio; só será preenchido após salvar
-lastEdit.textContent = "";
+if (parte.ultimaEdicao) {
+        lastEdit.textContent = `ÚLTIMA EDIÇÃO: ${parte.ultimaEdicao}`;
+      }
 
 // monta o container e anexa tudo
 saveContainer.appendChild(sb);
@@ -734,8 +739,6 @@ const hoje   = new Date().toLocaleDateString("pt-BR");
 lastEdit.textContent = `ÚLTIMA EDIÇÃO: ${usuario} - ${hoje}`;
 // — fim adição —
 
-        alert("Informações da parte atualizadas!");
-        modal.classList.add("hidden");
         carregarDetalhes(currentDocId);
       });
 
