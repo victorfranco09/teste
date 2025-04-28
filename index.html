@@ -655,9 +655,32 @@
       renderAdditionalFields();
 
       // Botão Salvar
-      const sb = document.createElement("button");
-      sb.textContent = "Salvar Parte"; sb.className = "parte-salvar";
-      sb.dataset.index = index; parteDetailsContainer.appendChild(sb);
+// — início substituição —
+const saveContainer = document.createElement("div");
+saveContainer.style.display = "flex";
+saveContainer.style.alignItems = "center";
+
+// botão Salvar Parte
+const sb = document.createElement("button");
+sb.textContent = "Salvar Parte";
+sb.className = "parte-salvar";
+sb.dataset.index = index;
+
+// span para última edição
+const lastEdit = document.createElement("small");
+lastEdit.className = "last-edit";
+lastEdit.style.marginLeft = "10px";
+lastEdit.style.fontStyle = "italic";
+lastEdit.style.fontSize = "0.8em";
+// inicialmente vazio; só será preenchido após salvar
+lastEdit.textContent = "";
+
+// monta o container e anexa tudo
+saveContainer.appendChild(sb);
+saveContainer.appendChild(lastEdit);
+parteDetailsContainer.appendChild(saveContainer);
+// — fim substituição —
+
       
       sb.addEventListener("click", async () => {
         // Montar objeto atualizado
@@ -704,6 +727,13 @@
         let partesArr = docSnap.data().partes || [];
         partesArr[index] = updatedPart;
         await docRef.update({ partes: partesArr });
+
+// — começa adição —
+const usuario = nomesPorEmail[auth.currentUser.email] || auth.currentUser.email;
+const hoje   = new Date().toLocaleDateString("pt-BR");
+lastEdit.textContent = `ÚLTIMA EDIÇÃO: ${usuario} - ${hoje}`;
+// — fim adição —
+
         alert("Informações da parte atualizadas!");
         modal.classList.add("hidden");
         carregarDetalhes(currentDocId);
