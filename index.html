@@ -117,8 +117,6 @@
     <div class="modal-content">
       <span class="close">&times;</span>
       <div id="parte-details-container">
-        <!-- permanente última edição -->
-        <small class="last-edit" style="display:block;font-style:italic;font-size:0.8em;margin-top:8px;"></small>
         <!-- Conteúdo da parte será carregado aqui -->
       </div>
     </div>
@@ -735,7 +733,18 @@ lastEditBlock.textContent = `ÚLTIMA EDIÇÃO: ${usuario} - ${hoje}`;
       });
 
 
-      modal.classList.remove("hidden");
+        // Insere bloco de Última Edição dinamicamente
+  const lastEditBlock = document.createElement("small");
+  lastEditBlock.className = "last-edit";
+  lastEditBlock.style.display = "block";
+  lastEditBlock.style.fontStyle = "italic";
+  lastEditBlock.style.fontSize = "0.8em";
+  lastEditBlock.style.marginTop = "8px";
+  if (parte.ultimaEdicao) {
+    lastEditBlock.textContent = `ÚLTIMA EDIÇÃO: ${parte.ultimaEdicao}`;
+  }
+  parteDetailsContainer.appendChild(lastEditBlock);
+modal.classList.remove("hidden");
     }
 
 
