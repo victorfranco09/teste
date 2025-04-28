@@ -363,6 +363,18 @@
     
     function abrirModalParte(parte, index) {
       parteDetailsContainer.innerHTML = "";
+      // bloco permanente de Última Edição
+      const lastEditBlock = document.createElement("small");
+      lastEditBlock.className = "last-edit";
+      lastEditBlock.style.display    = "block";
+      lastEditBlock.style.fontStyle  = "italic";
+      lastEditBlock.style.fontSize   = "0.8em";
+      lastEditBlock.style.marginTop  = "8px";
+      if (parte.ultimaEdicao) {
+        lastEditBlock.textContent = `ÚLTIMA EDIÇÃO: ${parte.ultimaEdicao}`;
+      }
+      parteDetailsContainer.appendChild(lastEditBlock);
+
       // Título
       const title = document.createElement("h3");
       const nomeTitle = typeof parte === "object" ? parte.nome : parte;
