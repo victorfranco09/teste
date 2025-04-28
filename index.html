@@ -677,7 +677,7 @@ lastEdit.style.fontStyle = "italic";
 lastEdit.style.fontSize = "0.8em";
 // inicialmente vazio; só será preenchido após salvar
 if (parte.ultimaEdicao) {
-        lastEdit.textContent = `ÚLTIMA EDIÇÃO: ${parte.ultimaEdicao}`;
+        lastEditBlock.textContent = `ÚLTIMA EDIÇÃO: ${parte.ultimaEdicao}`;
       }
 
 // monta o container e anexa tudo
@@ -686,18 +686,19 @@ saveContainer.appendChild(sb);
 parteDetailsContainer.appendChild(saveContainer);
 
 // elemento last-edit permanente
-const lastEdit = document.createElement("small");
-lastEdit.className = "last-edit";
-lastEdit.style.display = "block";
-lastEdit.style.fontStyle = "italic";
-lastEdit.style.fontSize = "0.8em";
-lastEdit.style.marginTop = "8px";
+const lastEditBlock = document.createElement("small");
+lastEditBlock.className = "last-edit";
+lastEditBlock.style.display = "block";
+lastEditBlock.style.fontStyle = "italic";
+lastEditBlock.style.fontSize = "0.8em";
+lastEditBlock.style.marginTop = "8px";
 if (parte.ultimaEdicao) {
-  lastEdit.textContent = `ÚLTIMA EDIÇÃO: ${parte.ultimaEdicao}`;
+  lastEditBlock.textContent = `ÚLTIMA EDIÇÃO: ${parte.ultimaEdicao}`;
 } else {
-  lastEdit.textContent = "";
+  lastEditBlock.textContent = "";
 }
-parteDetailsContainer.appendChild(lastEdit);
+parteDetailsContainer.appendChild(lastEditBlock);
+
 // — fim substituição —
 
       
@@ -750,7 +751,7 @@ parteDetailsContainer.appendChild(lastEdit);
 // — começa adição —
 const usuario = nomesPorEmail[auth.currentUser.email] || auth.currentUser.email;
 const hoje   = new Date().toLocaleDateString("pt-BR");
-lastEdit.textContent = `ÚLTIMA EDIÇÃO: ${usuario} - ${hoje}`;
+lastEditBlock.textContent = `ÚLTIMA EDIÇÃO: ${usuario} - ${hoje}`;
 // — fim adição —
 
         carregarDetalhes(currentDocId);
