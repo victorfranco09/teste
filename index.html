@@ -364,9 +364,11 @@
     function abrirModalParte(parte, index) {
       parteDetailsContainer.innerHTML = "";
       // Título
-      const title = document.createElement("h3");
-      title.textContent = "Detalhes da Parte - " + (typeof parte === "object" ? parte.nome : parte);
-      parteDetailsContainer.appendChild(title);
+const title = document.createElement("h3");
+const nomeTitle = typeof parte === "object" ? parte.nome : parte;
+const cpfTitle = (typeof parte === "object" && parte.cpf) ? parte.cpf : "";
+title.textContent = `Detalhes da Parte - ${nomeTitle}${cpfTitle ? " – "+cpfTitle : ""}`;
+parteDetailsContainer.appendChild(title);
 
       // Campos básicos em linha
       const basicFields = document.createElement("div");
