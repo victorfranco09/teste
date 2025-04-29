@@ -24,9 +24,42 @@
 }
 </style>
 
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js">
+// --- Switch de Abas ---
+document.querySelectorAll('.tabs .tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab + '-tab').classList.add('active');
+  });
+});
+
+</script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js">
+// --- Switch de Abas ---
+document.querySelectorAll('.tabs .tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab + '-tab').classList.add('active');
+  });
+});
+
+</script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js">
+// --- Switch de Abas ---
+document.querySelectorAll('.tabs .tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab + '-tab').classList.add('active');
+  });
+});
+
+</script>
 </head>
 <body>
   <!-- Tela de Login -->
@@ -52,7 +85,16 @@
         <div id="pendencias-list"></div>
       </aside>
       <main id="content">
-        <section id="detalhes-section" class="hidden">
+  <!-- Nav de Abas -->
+  <div class="tabs">
+    <button class="tab active" data-tab="detalhes">Detalhes</button>
+    <button class="tab" data-tab="andamentos">Andamentos</button>
+  </div>
+  <div class="tab-content">
+    <!-- Aba Detalhes -->
+    <div id="detalhes-tab" class="tab-panel active">
+      <div class="info-group">
+        <h2>Detalhes da Pendência</h2>
           <div class="info-group">
             <h2>Detalhes da Pendência</h2>
             <p>
@@ -106,8 +148,20 @@
               <!-- Os andamentos serão renderizados aqui -->
             </div>
           </div>
-        </section>
-      </main>
+        
+      </div>
+    </div>
+    <!-- Aba Andamentos -->
+    <div id="andamentos-tab" class="tab-panel">
+      <h4>Adicionar Andamento</h4>
+      <div class="andamento-input">
+        <textarea id="novo-andamento" placeholder="Descreva o andamento..." rows="3"></textarea>
+        <button id="enviar-andamento">Enviar Andamento</button>
+      </div>
+      <div id="andamentos-list"></div>
+    </div>
+  </div>
+</main>
     </div>
   </div>
 
@@ -802,6 +856,17 @@ parteDetailsContainer.insertBefore(emailAssinouRow, additionalContainer);
         modal.classList.add("hidden");
       }
     });
-  </script>
+  
+// --- Switch de Abas ---
+document.querySelectorAll('.tabs .tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab + '-tab').classList.add('active');
+  });
+});
+
+</script>
 </body>
 </html>

@@ -292,3 +292,30 @@ button:hover { background-color: #0056b3; }
   background-color: #0056b3 !important; /* fallback if needed */
   color: white !important;
 }
+
+/* Abas */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+.tabs .tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #fdfdfd;
+  border: none;
+  font-size: 1rem;
+}
+.tabs .tab.active {
+  background-color: #fff;
+  border-bottom: 3px solid #007bff;
+  font-weight: bold;
+}
+.tab-content .tab-panel {
+  display: none;
+}
+.tab-content .tab-panel.active {
+  display: block;
+}
