@@ -424,21 +424,43 @@
       lpLabel.appendChild(lpSelect);
       basicFields.appendChild(lpLabel);
 
-      // Contato antes de Telefone/Email
-      const contatoLabel = document.createElement("label");
-      contatoLabel.className = "field-group";
-      contatoLabel.textContent = "Contato:";
-      const contatoSelect = document.createElement("select");
-      contatoSelect.className = "parte-contato";
-      ["sim","não"].forEach(opt => {
-        const o = document.createElement("option");
-        o.value = opt;
-        o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-        contatoSelect.appendChild(o);
-      });
-      contatoSelect.value = (parte.contato||"não");
-      contatoLabel.appendChild(contatoSelect);
-      basicFields.appendChild(contatoLabel);
+// Linha Contato + Telefone
+const contatoTelefoneRow = document.createElement("div");
+contatoTelefoneRow.className = "contato-telefone-row";
+
+// Contato
+const contatoGroup = document.createElement("div");
+contatoGroup.className = "field-group";
+const contatoLabel = document.createElement("label");
+contatoLabel.textContent = "Contato:";
+const contatoSelect = document.createElement("select");
+contatoSelect.className = "parte-contato";
+["sim","não"].forEach(opt => {
+  const o = document.createElement("option");
+  o.value = opt;
+  o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
+  contatoSelect.appendChild(o);
+});
+contatoSelect.value = (parte.contato||"não");
+contatoLabel.appendChild(contatoSelect);
+contatoGroup.appendChild(contatoLabel);
+contatoTelefoneRow.appendChild(contatoGroup);
+
+// Telefone
+const telefoneGroup = document.createElement("div");
+telefoneGroup.className = "field-group";
+const telefoneLabel = document.createElement("label");
+telefoneLabel.textContent = "Telefone:";
+const telefoneInput = document.createElement("input");
+telefoneInput.type = "text";
+telefoneInput.className = "parte-telefone";
+telefoneInput.value = parte.telefone || "";
+telefoneLabel.appendChild(telefoneInput);
+telefoneGroup.appendChild(telefoneLabel);
+contatoTelefoneRow.appendChild(telefoneGroup);
+
+// Adiciona a linha de Contato + Telefone no modal
+parteDetailsContainer.appendChild(contatoTelefoneRow);
 
       parteDetailsContainer.appendChild(basicFields);
 

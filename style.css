@@ -321,3 +321,38 @@ button:hover {
   flex: 1 1 200px;
 }
 
+/* Campo status, interesse e LP lado a lado */
+#modal .modal-content .field-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+#modal .modal-content .field-row .field-group {
+  flex: 1 1 150px; /* Agora eles ficam alinhados melhor */
+  min-width: 130px;
+}
+
+/* Contato e Telefone lado a lado */
+#modal .modal-content .contato-telefone-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+/* Contato (bem pequeno) */
+#modal .modal-content select.parte-contato {
+  width: 100px;
+}
+
+/* Telefone (exato para (XX)XXXXX-XXXX) */
+#modal .modal-content input.parte-telefone {
+  width: 180px;
+}
+
+/* Email (um pouco menor do que estava) */
+#modal .modal-content input.parte-email {
+  width: 280px;
+}
