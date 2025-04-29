@@ -472,22 +472,15 @@ parteDetailsContainer.insertBefore(emailAssinouRow, additionalContainer);
     const statusValue = statusSelect.value;
     const contatoValue = contatoSelect.value;
 
-    // 1) Mostrar/ocultar Contato+Telefone
-    const hideCT = statusValue !== "vivo";
-    contatoTelefoneRow
-      .querySelectorAll(".field-group")
-      .forEach(el => el.classList.toggle("hidden-space", hideCT));
+    // 1) Mostrar/ocultar Contato+Telefone - ocultar linha inteira
+    contatoTelefoneRow.style.display = statusValue === "vivo" ? "flex" : "none";
 
-    // 2) Mostrar/ocultar Email+Assinou
-    const hideEA = statusValue !== "vivo" || contatoValue !== "sim";
-    emailAssinouRow
-      .querySelectorAll(".field-group")
-      .forEach(el => el.classList.toggle("hidden-space", hideEA));
+    // 2) Mostrar/ocultar Email+Assinou - ocultar linha inteira
+    emailAssinouRow.style.display = (statusValue === "vivo" && contatoValue === "sim") ? "flex" : "none";
 
-    // 3) Interesse global
-    document
-      .getElementById("global-interesse-label")
-      .classList.toggle("hidden-space", statusValue !== "vivo");
+    // 3) Interesse global - ocultar só o label
+    const globalInteresse = document.getElementById("global-interesse-label");
+    globalInteresse.parentElement.style.display = statusValue === "vivo" ? "flex" : "none";
 
     // 4) Limpa falecido + LP
     additionalContainer.innerHTML = "";
