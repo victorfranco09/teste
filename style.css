@@ -242,11 +242,40 @@ button:hover { background-color: #0056b3; }
 }
 
 /* Salvar Parte sempre visível */
+
+
+
+/* Modal content com flex para sticky header e footer */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+/* Conteúdo interno scrollável */
+#parte-details-container {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+/* Cabeçalho sticky */
+#parte-details-container h3 {
+  position: sticky;
+  top: 0;
+  background: white;
+  padding: 10px 0;
+  z-index: 1;
+}
+
+/* Botão Salvar Parte sempre visível via sticky footer */
 .parte-salvar {
-  position: absolute;
-  bottom: 10px;
-  right: 20px; /* ou ajuste conforme desejado */
-  left: auto;
-  transform: none;
-  z-index: 2;
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding: 12px 20px;
+  width: calc(100% - 40px);
+  margin: 10px;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+  z-index: 1;
 }
