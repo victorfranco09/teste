@@ -84,18 +84,14 @@ document.querySelectorAll('.tabs .tab').forEach(tab => {
         <h3>Pendências</h3>
         <div id="pendencias-list"></div>
       </aside>
-      <main id="content">
-  <!-- Nav de Abas -->
-  <div class="tabs">
-    <button class="tab active" data-tab="detalhes">Detalhes</button>
-    <button class="tab" data-tab="andamentos">Andamentos</button>
-  </div>
-  <div class="tab-content">
-    <!-- Aba Detalhes -->
-    <div id="detalhes-tab" class="tab-panel active">
-      <div class="info-group">
-        <h2>Detalhes da Pendência</h2>
-          <div class="info-group">
+            <main id="content">
+        <div class="tabs">
+          <button class="tab active" data-tab="detalhes">Detalhes</button>
+          <button class="tab" data-tab="andamentos">Andamentos</button>
+        </div>
+        <div class="tab-content">
+          <div id="detalhes-tab" class="tab-panel active">
+<div class="info-group">
             <h2>Detalhes da Pendência</h2>
             <p>
               <strong>Processo:</strong>
@@ -136,32 +132,17 @@ document.querySelectorAll('.tabs .tab').forEach(tab => {
             <button id="salvar-btn">Salvar Alterações</button>
             <p id="salvar-msg" class="success"></p>
           </div>
-
-          <!-- Seção de Andamentos -->
-          <div id="andamentos-section">
+          </div>
+          <div id="andamentos-tab" class="tab-panel">
+<div id="andamentos-section">
             <h4>Adicionar Andamento</h4>
             <div class="andamento-input">
               <textarea id="novo-andamento" placeholder="Descreva o andamento..." rows="3"></textarea>
               <button id="enviar-andamento">Enviar Andamento</button>
             </div>
-            <div id="andamentos-list">
-              <!-- Os andamentos serão renderizados aqui -->
-            </div>
           </div>
-        
-      </div>
-    </div>
-    <!-- Aba Andamentos -->
-    <div id="andamentos-tab" class="tab-panel">
-      <h4>Adicionar Andamento</h4>
-      <div class="andamento-input">
-        <textarea id="novo-andamento" placeholder="Descreva o andamento..." rows="3"></textarea>
-        <button id="enviar-andamento">Enviar Andamento</button>
-      </div>
-      <div id="andamentos-list"></div>
-    </div>
-  </div>
-</main>
+        </div>
+      </main>
     </div>
   </div>
 
