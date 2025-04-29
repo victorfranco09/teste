@@ -478,9 +478,9 @@ parteDetailsContainer.insertBefore(emailAssinouRow, additionalContainer);
     // 2) Mostrar/ocultar Email+Assinou - ocultar linha inteira
     emailAssinouRow.style.display = (statusValue === "vivo" && contatoValue === "sim") ? "flex" : "none";
 
-    // 3) Interesse global - ocultar só o label
+    // 3) Mostrar/ocultar Interesse
     const globalInteresse = document.getElementById("global-interesse-label");
-    globalInteresse.parentElement.style.display = statusValue === "vivo" ? "flex" : "none";
+    globalInteresse.style.display = statusValue === "vivo" ? "" : "none";
 
     // 4) Limpa falecido + LP
     additionalContainer.innerHTML = "";
