@@ -279,3 +279,16 @@ button:hover { background-color: #0056b3; }
   box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
   z-index: 1;
 }
+
+
+/* Garantir botão 'Salvar Parte' sempre azul e texto branco */
+.parte-salvar {
+  background-color: #007bff !important;
+  color: white !important;
+  border: none !important;
+}
+
+.parte-salvar:hover {
+  background-color: #0056b3 !important; /* fallback if needed */
+  color: white !important;
+}
