@@ -5,10 +5,7 @@ body {
   padding: 0;
   background-color: #f2f4f7;
 }
-
-.hidden {
-  display: none !important;
-}
+.hidden { display: none !important; }
 
 /* Tela de Login */
 #login-screen {
@@ -19,7 +16,6 @@ body {
   background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
   padding: 20px;
 }
-
 .login-container {
   background-color: #fff;
   padding: 40px;
@@ -29,7 +25,6 @@ body {
   width: 100%;
   max-width: 400px;
 }
-
 #login-screen input {
   padding: 12px;
   margin-bottom: 20px;
@@ -39,7 +34,6 @@ body {
   width: 100%;
   box-sizing: border-box;
 }
-
 #login-screen button {
   padding: 12px;
   border: none;
@@ -51,15 +45,8 @@ body {
   width: 100%;
   transition: background-color 0.2s;
 }
-
-#login-screen button:hover {
-  background-color: #0056b3;
-}
-
-.error {
-  color: red;
-  margin-top: 10px;
-}
+#login-screen button:hover { background-color: #0056b3; }
+.error { color: red; margin-top: 10px; }
 
 /* Dashboard */
 #dashboard header {
@@ -68,10 +55,9 @@ body {
   padding: 10px 20px;
   text-align: center;
 }
-
 .container {
   display: flex;
-  height: calc(100vh - 60px); /* considerando a altura do header */
+  height: calc(100vh - 60px);
 }
 
 /* Sidebar */
@@ -82,10 +68,7 @@ body {
   padding: 20px;
   overflow-y: auto;
 }
-
-#sidebar h3 {
-  margin-top: 0;
-}
+#sidebar h3 { margin-top: 0; }
 
 /* Conteúdo */
 #content {
@@ -104,37 +87,6 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Abas */
-.tabs {
-  display: flex;
-  border-bottom: 1px solid #ccc;
-  margin-bottom: 20px;
-}
-
-.tabs .tab {
-  flex: 1;
-  padding: 10px;
-  text-align: center;
-  cursor: pointer;
-  background-color: #fdfdfd;
-  border: none;
-  font-size: 1rem;
-}
-
-.tabs .tab.active {
-  background-color: #fff;
-  border-bottom: 3px solid #007bff;
-  font-weight: bold;
-}
-
-.tab-content .tab-panel {
-  display: none;
-}
-
-.tab-content .tab-panel.active {
-  display: block;
-}
-
 /* Lista de Pendências */
 #pendencias-list .grupo-descricao {
   margin-bottom: 20px;
@@ -143,7 +95,6 @@ body {
   padding: 10px;
   background-color: #fff;
 }
-
 #pendencias-list .grupo-descricao h4 {
   margin: 0;
   font-size: 1.2rem;
@@ -153,23 +104,18 @@ body {
   cursor: pointer;
   border-radius: 4px;
 }
-
 #pendencias-list ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-
 #pendencias-list li {
   padding: 10px;
   border-bottom: 1px solid #ccc;
   cursor: pointer;
   transition: background-color 0.2s;
 }
-
-#pendencias-list li:hover {
-  background-color: #eef5ff;
-}
+#pendencias-list li:hover { background-color: #eef5ff; }
 
 /* Botões Gerais */
 button {
@@ -181,15 +127,8 @@ button {
   cursor: pointer;
   transition: background-color 0.2s;
 }
-
-button:hover {
-  background-color: #0056b3;
-}
-
-.success {
-  color: green;
-  margin-top: 10px;
-}
+button:hover { background-color: #0056b3; }
+.success { color: green; margin-top: 10px; }
 
 /* Modal para Partes */
 .modal {
@@ -204,7 +143,6 @@ button:hover {
   justify-content: center;
   z-index: 100;
 }
-
 .modal-content {
   background: #fff;
   padding: 20px;
@@ -213,7 +151,6 @@ button:hover {
   max-width: 600px;
   position: relative;
 }
-
 .modal .close {
   position: absolute;
   right: 15px;
@@ -222,20 +159,25 @@ button:hover {
   cursor: pointer;
 }
 
+/* Estilos modal Detalhes da Parte */
+#modal .modal-content .field-group { margin-bottom: 16px; }
+#modal .modal-content label { display: block; margin-bottom: 6px; font-weight: 600; }
+#modal .modal-content input,
+#modal .modal-content select,
+#modal .modal-content textarea {
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+#modal .modal-content .field-row { display: flex; gap: 12px; }
+#modal .modal-content .field-row .field-group { flex: 1; }
+.hidden-space { visibility: hidden; }
+
 /* Seção "Adicionar Andamento" */
-.andamento-input {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-#andamentos-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
+.andamento-input { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+#andamentos-list { display: flex;.flex-direction: column;gap: 15px; }
 .andamento-item {
   padding: 15px;
   border: 1px solid #ccc;
@@ -243,62 +185,20 @@ button:hover {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+.andamento-item p { margin: 0 0 10px 0; }
+.andamento-item small { color: #555; font-style: italic; }
 
-.andamento-item p {
-  margin: 0 0 10px 0;
-}
+/* Flags e herdeiros */
+.flag { margin-left: 4px; font-size: 0.9em; }
+.herdeiros-list { list-style: disc; margin-left: 20px; padding-left: 10px; }
+.herdeiros-list li { font-size: 0.9em; margin-top: 4px; }
 
-.andamento-item small {
-  color: #555;
-  font-style: italic;
-}
-
-/* Estilo para as flags (emojis) */
-.flag {
-  margin-left: 4px;
-  font-size: 0.9em;
-}
-
-/* Estilo para herdeiros na listagem de Partes */
-.herdeiros-list {
-  list-style: disc;
-  margin-left: 20px;
-  padding-left: 10px;
-}
-
-.herdeiros-list li {
-  font-size: 0.9em;
-  margin-top: 4px;
-}
-
-/* Estilo para herdeiros no modal */
+/* Linha de herdeiro no modal */
 .herdeiro-row {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 5px;
 }
-
-.herdeiro-row input.herdeiro-name {
-  flex: 1;
-}
-
-.herdeiro-row button {
-  background-color: transparent;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  color: red;
-}
-
-  /* === Campos em linha no modal de Parte === */
-  #modal .modal-content .field-row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 16px;
-  }
-  #modal .modal-content .field-row .field-group {
-    flex: 1 1 200px;
-  }
-
+.herdeiro-row input.herdeiro-name { flex: 1; }
+.herdeiro-row button { background-color: transparent; border: none; font-size: 1.2rem; cursor: pointer; color: red; }

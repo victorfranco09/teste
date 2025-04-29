@@ -11,18 +11,17 @@
     #modal .modal-content label { display: block; margin-bottom: 6px; font-weight: 600; }
     #modal .modal-content input,
     #modal .modal-content select,
-    #modal .modal-content textarea { width: 100%; padding: 6px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 4px; }
+    #modal .modal-content textarea { width: 100%; padding: 6px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 6px; }
   
   /* Campos em linha no modal de Parte */
-  #modal .modal-content .field-row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 16px;
-  }
-  #modal .modal-content .field-row .field-group {
-    flex: 1 1 200px;
-  }
+#modal .modal-content .field-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+#modal .modal-content .field-row .field-group {
+  flex: 1;
+}
 </style>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -424,235 +423,253 @@
       lpLabel.appendChild(lpSelect);
       basicFields.appendChild(lpLabel);
 
-      // Contato antes de Telefone/Email
-      const contatoLabel = document.createElement("label");
-      contatoLabel.className = "field-group";
-      contatoLabel.textContent = "Contato:";
-      const contatoSelect = document.createElement("select");
-      contatoSelect.className = "parte-contato";
+
+
+      parteDetailsContainer.appendChild(basicFields);
+
+// Container para campos adicionais
+const additionalContainer = document.createElement("div");
+additionalContainer.id = "additional-fields";
+parteDetailsContainer.appendChild(additionalContainer);
+
+// ——— LINHA FIXA: Contato e Telefone ———
+const contatoTelefoneRow = document.createElement("div");
+contatoTelefoneRow.className = "field-row";
+contatoTelefoneRow.innerHTML = `
+  <label class="field-group">Contato:
+    <select class="parte-contato">
+      <option value="sim" ${parte.contato === "sim" ? "selected" : ""}>Sim</option>
+      <option value="não" ${parte.contato === "não" ? "selected" : ""}>Não</option>
+    </select>
+  </label>
+  <label class="field-group">Telefone:
+    <input type="text" class="parte-telefone" value="${parte.telefone || ''}"/>
+  </label>
+`;
+parteDetailsContainer.insertBefore(contatoTelefoneRow, additionalContainer);
+const contatoSelect = contatoTelefoneRow.querySelector(".parte-contato");
+
+// ——— LINHA FIXA: Email e Assinou Acordo ———
+const emailAssinouRow = document.createElement("div");
+emailAssinouRow.className = "field-row";
+emailAssinouRow.innerHTML = `
+  <label class="field-group">Email:
+    <input type="text" class="parte-email" value="${parte.email || ''}"/>
+  </label>
+  <label class="field-group">Assinou Acordo:
+    <select class="parte-assinou">
+      <option value="sim" ${parte.assinou === "sim" ? "selected" : ""}>Sim</option>
+      <option value="não" ${parte.assinou === "não" ? "selected" : ""}>Não</option>
+    </select>
+  </label>
+`;
+parteDetailsContainer.insertBefore(emailAssinouRow, additionalContainer);
+
+
+
+  // Função de renderização unificada
+  function renderAdditionalFields() {
+    const statusValue = statusSelect.value;
+    const contatoValue = contatoSelect.value;
+
+    // 1) Mostrar/ocultar Contato+Telefone
+    const hideCT = statusValue !== "vivo";
+    contatoTelefoneRow
+      .querySelectorAll(".field-group")
+      .forEach(el => el.classList.toggle("hidden-space", hideCT));
+
+    // 2) Mostrar/ocultar Email+Assinou
+    const hideEA = statusValue !== "vivo" || contatoValue !== "sim";
+    emailAssinouRow
+      .querySelectorAll(".field-group")
+      .forEach(el => el.classList.toggle("hidden-space", hideEA));
+
+    // 3) Interesse global
+    document
+      .getElementById("global-interesse-label")
+      .classList.toggle("hidden-space", statusValue !== "vivo");
+
+    // 4) Limpa falecido + LP
+    additionalContainer.innerHTML = "";
+
+    // — Falecido: bens, número de herdeiros e lista de herdeiros —
+    if (statusValue === "falecido") {
+      // Deixou bens?
+      const bensLabel = document.createElement("label");
+      bensLabel.textContent = "Deixou bens?: ";
+      const bensSelect = document.createElement("select");
+      bensSelect.className = "parte-deixou-bens";
       ["sim","não"].forEach(opt => {
         const o = document.createElement("option");
         o.value = opt;
         o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-        contatoSelect.appendChild(o);
+        bensSelect.appendChild(o);
       });
-      contatoSelect.value = (parte.contato||"não");
-      contatoLabel.appendChild(contatoSelect);
-      basicFields.appendChild(contatoLabel);
+      bensSelect.value = (parte.deixou_bens || "não").toLowerCase();
+      bensLabel.appendChild(bensSelect);
+      additionalContainer.appendChild(bensLabel);
 
-      parteDetailsContainer.appendChild(basicFields);
+      // Número de herdeiros
+      const numHLabel = document.createElement("label");
+      numHLabel.textContent = "Número de herdeiros: ";
+      const numHInput = document.createElement("input");
+      numHInput.type = "text";
+      numHInput.maxLength = 2;
+      numHInput.pattern = "\\d*";
+      numHInput.className = "parte-num-herdeiros";
+      numHInput.value = parte.numero_de_herdeiros || "";
+      numHLabel.appendChild(numHInput);
+      additionalContainer.appendChild(numHLabel);
 
-      // Container para campos adicionais
-      const additionalContainer = document.createElement("div");
-      additionalContainer.id = "additional-fields";
-      parteDetailsContainer.appendChild(additionalContainer);
+      // Container de herdeiros
+      const herdeirosContainer = document.createElement("div");
+      herdeirosContainer.id = "herdeiros-container";
+      const herdeirosLabel = document.createElement("label");
+      herdeirosLabel.textContent = "Herdeiros:";
+      herdeirosContainer.appendChild(herdeirosLabel);
+      const herdeirosList = document.createElement("div");
+      herdeirosList.id = "herdeiros-list-modal";
+      herdeirosContainer.appendChild(herdeirosList);
 
-      function renderAdditionalFields() {
-        const statusValue = statusSelect.value;
-          contatoLabel.style.display = statusValue === "vivo" ? "block" : "none";
-        additionalContainer.innerHTML = "";
-
-        // Mostrar/ocultar Interesse
-        const gi = document.getElementById("global-interesse-label");
-        if (gi) gi.style.display = statusValue === "vivo" ? "block" : "none";
-
-        if (statusValue === "vivo") {
-          // Telefone
-          const tLabel = document.createElement("label");
-          tLabel.textContent = "Telefone:";
-          const tInput = document.createElement("input");
-          tInput.type = "text"; tInput.className = "parte-telefone";
-          tInput.value = parte.telefone||""; tLabel.appendChild(tInput);
-          additionalContainer.appendChild(tLabel);
-
-          // Email
-          const eLabel = document.createElement("label");
-          eLabel.textContent = "Email:";
-          const eInput = document.createElement("input");
-          eInput.type = "text"; eInput.className = "parte-email";
-          eInput.value = parte.email||""; eLabel.appendChild(eInput);
-          additionalContainer.appendChild(eLabel);
-
-          // Assinou Acordo
-          if (contatoSelect.value === "sim") {
-            const aLabel = document.createElement("label");
-            aLabel.textContent = "Assinou Acordo:";
-            const aSelect = document.createElement("select");
-            aSelect.className = "parte-assinou";
-            ["sim","não"].forEach(opt => {
-              const o = document.createElement("option");
-              o.value = opt;
-              o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-              aSelect.appendChild(o);
-            });
-            aSelect.value = parte.assinou||"não";
-            aLabel.appendChild(aSelect);
-            additionalContainer.appendChild(aLabel);
-          }
-        } 
-        else if (statusValue === "falecido") {
-          // Deixou bens?
-          const bensLabel = document.createElement("label");
-          bensLabel.textContent = "Deixou bens?: ";
-          const bensSelect = document.createElement("select");
-          bensSelect.className = "parte-deixou-bens";
-          ["sim","não"].forEach(opt => {
-            const o = document.createElement("option");
-            o.value = opt;
-            o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-            bensSelect.appendChild(o);
-          });
-          bensSelect.value = (parte.deixou_bens || "não").toLowerCase();
-          bensLabel.appendChild(bensSelect);
-          additionalContainer.appendChild(bensLabel);
-
-          // Número de herdeiros
-          const numHLabel = document.createElement("label");
-          numHLabel.textContent = "Número de herdeiros: ";
-          const numHInput = document.createElement("input");
-          numHInput.type = "text";
-          numHInput.maxLength = 2;
-          numHInput.pattern = "\d*";
-          numHInput.className = "parte-num-herdeiros";
-          numHLabel.appendChild(numHInput);
-          additionalContainer.appendChild(numHLabel);
-
-          const herdeirosContainer = document.createElement("div");
-          herdeirosContainer.id = "herdeiros-container";
-          const herdeirosLabel = document.createElement("label");
-          herdeirosLabel.textContent = "Herdeiros:";
-          herdeirosContainer.appendChild(herdeirosLabel);
-          const herdeirosList = document.createElement("div");
-          herdeirosList.id = "herdeiros-list-modal";
-          herdeirosContainer.appendChild(herdeirosList);
-
-          let herdeirosData = [];
-          if (parte.herdeiros && Array.isArray(parte.herdeiros)) {
-            herdeirosData = parte.herdeiros;
-          } else if (typeof parte.herdeiros === "string" && parte.herdeiros.trim() !== "") {
-            herdeirosData = [parte.herdeiros];
-          } else {
-            herdeirosData = [""];
-          }
-
-          function addHerdeiroRow(value = "", assinou = "não", interesseVal = "não") {
-            const row = document.createElement("div");
-            row.className = "herdeiro-row";
-
-            // Nome
-            const input = document.createElement("input");
-            input.type = "text";
-            input.className = "herdeiro-name";
-            input.value = value;
-            row.appendChild(input);
-
-            // Emoji indicador
-            const emojiSpan = document.createElement("span");
-            emojiSpan.className = "herdeiro-emoji";
-            emojiSpan.style.marginLeft = "8px";
-            row.appendChild(emojiSpan);
-
-            // Assinou?
-            const assinouLabel = document.createElement("label");
-            assinouLabel.textContent = "Assinou? ";
-            const assinouSelect = document.createElement("select");
-            assinouSelect.className = "herdeiro-assinou";
-            ["sim","não"].forEach(opt => {
-              const o = document.createElement("option");
-              o.value = opt;
-              o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-              assinouSelect.appendChild(o);
-            });
-            assinouSelect.value = assinou;
-            assinouLabel.appendChild(assinouSelect);
-            row.appendChild(assinouLabel);
-
-            // Interesse?
-            const intLabel = document.createElement("label");
-            intLabel.textContent = "Interesse? ";
-            const intSelect = document.createElement("select");
-            intSelect.className = "herdeiro-interesse";
-            ["sim","não"].forEach(opt => {
-              const o = document.createElement("option");
-              o.value = opt;
-              o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-              intSelect.appendChild(o);
-            });
-            intSelect.value = interesseVal;
-            intLabel.appendChild(intSelect);
-            row.appendChild(intLabel);
-
-            // Botão remover
-            if (herdeirosList.children.length > 0) {
-              const removeBtn = document.createElement("button");
-              removeBtn.type = "button";
-              removeBtn.textContent = "−";
-              removeBtn.addEventListener("click", () => herdeirosList.removeChild(row));
-              row.appendChild(removeBtn);
-            }
-
-            // Atualizar emoji
-            function updateEmoji() {
-              let em = "";
-              if (assinouSelect.value === "sim") em += "✍️";
-              if (intSelect.value === "não") em += " 🙅‍♂️";
-              emojiSpan.textContent = em;
-            }
-            assinouSelect.addEventListener("change", updateEmoji);
-            intSelect.addEventListener("change", updateEmoji);
-            updateEmoji();
-
-            herdeirosList.appendChild(row);
-          }
-
-          herdeirosData.forEach(item => {
-            if (typeof item === "object") {
-              addHerdeiroRow(item.nome || "", item.assinou || "não", item.interesse || "não");
-            } else {
-              addHerdeiroRow(item, "não", "não");
-            }
-          });
-
-          const addBtn = document.createElement("button");
-          addBtn.type = "button";
-          addBtn.textContent = "+";
-          addBtn.addEventListener("click", () => addHerdeiroRow("", "não", "não"));
-          herdeirosContainer.appendChild(addBtn);
-
-          additionalContainer.appendChild(herdeirosContainer);
-        }
-
-
-        // Campos LP
-        if (lpSelect.value === "sim") {
-          const lp1 = document.createElement("label");
-          lp1.textContent = "Nº Processo (LP):";
-          const lp1in = document.createElement("input");
-          lp1in.type = "text"; lp1in.className = "parte-lp-numero-processo";
-          lp1in.value = parte.numero_processo_lp||""; lp1.appendChild(lp1in);
-          additionalContainer.appendChild(lp1);
-
-          const lp2 = document.createElement("label");
-          lp2.textContent = "Nome do Advogado (LP):";
-          const lp2in = document.createElement("input");
-          lp2in.type = "text"; lp2in.className = "parte-lp-advogado";
-          lp2in.value = parte.advogado_lp||""; lp2.appendChild(lp2in);
-          additionalContainer.appendChild(lp2);
-
-          const lp3 = document.createElement("label");
-          lp3.textContent = "Observações (LP):";
-          const lp3ta = document.createElement("textarea");
-          lp3ta.className = "parte-lp-observacoes"; lp3ta.rows = 3;
-          lp3ta.value = parte.observacoes_lp||""; lp3.appendChild(lp3ta);
-          additionalContainer.appendChild(lp3);
-        }
+      // Dados iniciais de herdeiros
+      let herdeirosData = [];
+      if (Array.isArray(parte.herdeiros)) {
+        herdeirosData = parte.herdeiros;
+      } else if (typeof parte.herdeiros === "string" && parte.herdeiros.trim() !== "") {
+        herdeirosData = [parte.herdeiros];
+      } else {
+        herdeirosData = [""];
       }
 
-      // Listeners
-      [statusSelect, interesseSelect, lpSelect, contatoSelect].forEach(el => el.addEventListener("change", renderAdditionalFields));
+      // Função para adicionar linha de herdeiro
+      function addHerdeiroRow(value = "", assinou = "não", interesseVal = "não") {
+        const row = document.createElement("div");
+        row.className = "herdeiro-row";
 
-      // Primeira renderização
-      renderAdditionalFields();
+        // Nome
+        const input = document.createElement("input");
+        input.type = "text";
+        input.className = "herdeiro-name";
+        input.value = value;
+        row.appendChild(input);
+
+        // Emoji indicador
+        const emojiSpan = document.createElement("span");
+        emojiSpan.className = "herdeiro-emoji";
+        emojiSpan.style.marginLeft = "8px";
+        row.appendChild(emojiSpan);
+
+        // Assinou?
+        const assinouLabel = document.createElement("label");
+        assinouLabel.textContent = "Assinou? ";
+        const assinouSelect = document.createElement("select");
+        assinouSelect.className = "herdeiro-assinou";
+        ["sim","não"].forEach(opt => {
+          const o = document.createElement("option");
+          o.value = opt;
+          o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
+          assinouSelect.appendChild(o);
+        });
+        assinouSelect.value = assinou;
+        assinouLabel.appendChild(assinouSelect);
+        row.appendChild(assinouLabel);
+
+        // Interesse?
+        const intLabel = document.createElement("label");
+        intLabel.textContent = "Interesse? ";
+        const intSelect = document.createElement("select");
+        intSelect.className = "herdeiro-interesse";
+        ["sim","não"].forEach(opt => {
+          const o = document.createElement("option");
+          o.value = opt;
+          o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
+          intSelect.appendChild(o);
+        });
+        intSelect.value = interesseVal;
+        intLabel.appendChild(intSelect);
+        row.appendChild(intLabel);
+
+        // Botão remover (se não for a primeira linha)
+        if (herdeirosList.children.length > 0) {
+          const removeBtn = document.createElement("button");
+          removeBtn.type = "button";
+          removeBtn.textContent = "−";
+          removeBtn.addEventListener("click", () => herdeirosList.removeChild(row));
+          row.appendChild(removeBtn);
+        }
+
+        // Atualiza emoji conforme seleção
+        function updateEmoji() {
+          let em = "";
+          if (assinouSelect.value === "sim") em += "✍️";
+          if (intSelect.value === "não") em += " 🙅‍♂️";
+          emojiSpan.textContent = em;
+        }
+        assinouSelect.addEventListener("change", updateEmoji);
+        intSelect.addEventListener("change", updateEmoji);
+        updateEmoji();
+
+        herdeirosList.appendChild(row);
+      }
+
+      // Renderiza linhas iniciais de herdeiros
+      herdeirosData.forEach(item => {
+        if (typeof item === "object") {
+          addHerdeiroRow(item.nome || "", item.assinou || "não", item.interesse || "não");
+        } else {
+          addHerdeiroRow(item, "não", "não");
+        }
+      });
+
+      // Botão “+” para adicionar novo herdeiro
+      const addBtn = document.createElement("button");
+      addBtn.type = "button";
+      addBtn.textContent = "+";
+      addBtn.addEventListener("click", () => addHerdeiroRow("", "não", "não"));
+      herdeirosContainer.appendChild(addBtn);
+
+      additionalContainer.appendChild(herdeirosContainer);
+    }
+
+    // — Campos LP —  
+    if (lpSelect.value === "sim") {
+      const lp1 = document.createElement("label");
+      lp1.textContent = "Nº Processo (LP):";
+      const lp1in = document.createElement("input");
+      lp1in.type = "text";
+      lp1in.className = "parte-lp-numero-processo";
+      lp1in.value = parte.numero_processo_lp || "";
+      lp1.appendChild(lp1in);
+      additionalContainer.appendChild(lp1);
+
+      const lp2 = document.createElement("label");
+      lp2.textContent = "Nome do Advogado (LP):";
+      const lp2in = document.createElement("input");
+      lp2in.type = "text";
+      lp2in.className = "parte-lp-advogado";
+      lp2in.value = parte.advogado_lp || "";
+      lp2.appendChild(lp2in);
+      additionalContainer.appendChild(lp2);
+
+      const lp3 = document.createElement("label");
+      lp3.textContent = "Observações (LP):";
+      const lp3ta = document.createElement("textarea");
+      lp3ta.className = "parte-lp-observacoes";
+      lp3ta.rows = 3;
+      lp3ta.value = parte.observacoes_lp || "";
+      lp3.appendChild(lp3ta);
+      additionalContainer.appendChild(lp3);
+    }
+  }
+
+  // Listeners para re-renderizar ao mudar selects
+  [statusSelect, interesseSelect, lpSelect, contatoSelect].forEach(el =>
+    el.addEventListener("change", renderAdditionalFields)
+  );
+
+  // Primeira renderização
+  renderAdditionalFields();
+
 
       // Botão Salvar
       const sb = document.createElement("button");
