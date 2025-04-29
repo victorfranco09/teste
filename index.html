@@ -424,43 +424,21 @@
       lpLabel.appendChild(lpSelect);
       basicFields.appendChild(lpLabel);
 
-// Linha Contato + Telefone
-const contatoTelefoneRow = document.createElement("div");
-contatoTelefoneRow.className = "contato-telefone-row";
-
-// Contato
-const contatoGroup = document.createElement("div");
-contatoGroup.className = "field-group";
-const contatoLabel = document.createElement("label");
-contatoLabel.textContent = "Contato:";
-const contatoSelect = document.createElement("select");
-contatoSelect.className = "parte-contato";
-["sim","não"].forEach(opt => {
-  const o = document.createElement("option");
-  o.value = opt;
-  o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-  contatoSelect.appendChild(o);
-});
-contatoSelect.value = (parte.contato||"não");
-contatoLabel.appendChild(contatoSelect);
-contatoGroup.appendChild(contatoLabel);
-contatoTelefoneRow.appendChild(contatoGroup);
-
-// Telefone
-const telefoneGroup = document.createElement("div");
-telefoneGroup.className = "field-group";
-const telefoneLabel = document.createElement("label");
-telefoneLabel.textContent = "Telefone:";
-const telefoneInput = document.createElement("input");
-telefoneInput.type = "text";
-telefoneInput.className = "parte-telefone";
-telefoneInput.value = parte.telefone || "";
-telefoneLabel.appendChild(telefoneInput);
-telefoneGroup.appendChild(telefoneLabel);
-contatoTelefoneRow.appendChild(telefoneGroup);
-
-// Adiciona a linha de Contato + Telefone no modal
-parteDetailsContainer.appendChild(contatoTelefoneRow);
+      // Contato antes de Telefone/Email
+      const contatoLabel = document.createElement("label");
+      contatoLabel.className = "field-group";
+      contatoLabel.textContent = "Contato:";
+      const contatoSelect = document.createElement("select");
+      contatoSelect.className = "parte-contato";
+      ["sim","não"].forEach(opt => {
+        const o = document.createElement("option");
+        o.value = opt;
+        o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
+        contatoSelect.appendChild(o);
+      });
+      contatoSelect.value = (parte.contato||"não");
+      contatoLabel.appendChild(contatoSelect);
+      basicFields.appendChild(contatoLabel);
 
       parteDetailsContainer.appendChild(basicFields);
 
@@ -513,46 +491,31 @@ parteDetailsContainer.appendChild(contatoTelefoneRow);
           }
         } 
         else if (statusValue === "falecido") {
-// Agrupar Deixou bens? e Número de herdeiros lado a lado
-const herdeirosRow = document.createElement("div");
-herdeirosRow.className = "field-row";
+          // Deixou bens?
+          const bensLabel = document.createElement("label");
+          bensLabel.textContent = "Deixou bens?: ";
+          const bensSelect = document.createElement("select");
+          bensSelect.className = "parte-deixou-bens";
+          ["sim","não"].forEach(opt => {
+            const o = document.createElement("option");
+            o.value = opt;
+            o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
+            bensSelect.appendChild(o);
+          });
+          bensSelect.value = (parte.deixou_bens || "não").toLowerCase();
+          bensLabel.appendChild(bensSelect);
+          additionalContainer.appendChild(bensLabel);
 
-// Deixou bens
-const bensGroup = document.createElement("div");
-bensGroup.className = "field-group";
-const bensLabel = document.createElement("label");
-bensLabel.textContent = "Deixou bens?: ";
-const bensSelect = document.createElement("select");
-bensSelect.className = "parte-deixou-bens";
-["sim", "não"].forEach(opt => {
-  const o = document.createElement("option");
-  o.value = opt;
-  o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-  bensSelect.appendChild(o);
-});
-bensSelect.value = (parte.deixou_bens || "não").toLowerCase();
-bensGroup.appendChild(bensLabel);
-bensGroup.appendChild(bensSelect);
-
-// Número de herdeiros
-const numHerdeirosGroup = document.createElement("div");
-numHerdeirosGroup.className = "field-group";
-const numHLabel = document.createElement("label");
-numHLabel.textContent = "Número de herdeiros: ";
-const numHInput = document.createElement("input");
-numHInput.type = "text";
-numHInput.maxLength = 2;
-numHInput.pattern = "\\d*";
-numHInput.className = "parte-num-herdeiros";
-numHerdeirosGroup.appendChild(numHLabel);
-numHerdeirosGroup.appendChild(numHInput);
-
-// Colocar os dois dentro da linha
-herdeirosRow.appendChild(bensGroup);
-herdeirosRow.appendChild(numHerdeirosGroup);
-
-additionalContainer.appendChild(herdeirosRow);
-
+          // Número de herdeiros
+          const numHLabel = document.createElement("label");
+          numHLabel.textContent = "Número de herdeiros: ";
+          const numHInput = document.createElement("input");
+          numHInput.type = "text";
+          numHInput.maxLength = 2;
+          numHInput.pattern = "\d*";
+          numHInput.className = "parte-num-herdeiros";
+          numHLabel.appendChild(numHInput);
+          additionalContainer.appendChild(numHLabel);
 
           const herdeirosContainer = document.createElement("div");
           herdeirosContainer.id = "herdeiros-container";
