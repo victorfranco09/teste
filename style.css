@@ -292,13 +292,32 @@ button:hover {
 }
 
   /* === Campos em linha no modal de Parte === */
-  #modal .modal-content .field-row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 16px;
-  }
-  #modal .modal-content .field-row .field-group {
-    flex: 1 1 200px;
-  }
+
+/* Ajustes para os campos no modal */
+#modal .modal-content .field-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+#modal .modal-content .field-row .field-group {
+  flex: 1 1 200px; /* para Status, Interesse, LP, Contato */
+  min-width: 150px; /* garantir mínimo bom */
+}
+
+/* Campos Telefone e Email */
+#modal .modal-content input.parte-telefone {
+  max-width: 220px; /* Ajustado para (XX)XXXXX-XXXX */
+}
+
+#modal .modal-content input.parte-email {
+  max-width: 400px; /* Email geralmente é maior */
+}
+
+/* Campos para falecido (Deixou bens? e Número de herdeiros) */
+
+#modal .modal-content .herdeiros-row .field-group {
+  flex: 1 1 200px;
+}
 

@@ -491,31 +491,46 @@
           }
         } 
         else if (statusValue === "falecido") {
-          // Deixou bens?
-          const bensLabel = document.createElement("label");
-          bensLabel.textContent = "Deixou bens?: ";
-          const bensSelect = document.createElement("select");
-          bensSelect.className = "parte-deixou-bens";
-          ["sim","não"].forEach(opt => {
-            const o = document.createElement("option");
-            o.value = opt;
-            o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
-            bensSelect.appendChild(o);
-          });
-          bensSelect.value = (parte.deixou_bens || "não").toLowerCase();
-          bensLabel.appendChild(bensSelect);
-          additionalContainer.appendChild(bensLabel);
+// Agrupar Deixou bens? e Número de herdeiros lado a lado
+const herdeirosRow = document.createElement("div");
+herdeirosRow.className = "field-row";
 
-          // Número de herdeiros
-          const numHLabel = document.createElement("label");
-          numHLabel.textContent = "Número de herdeiros: ";
-          const numHInput = document.createElement("input");
-          numHInput.type = "text";
-          numHInput.maxLength = 2;
-          numHInput.pattern = "\d*";
-          numHInput.className = "parte-num-herdeiros";
-          numHLabel.appendChild(numHInput);
-          additionalContainer.appendChild(numHLabel);
+// Deixou bens
+const bensGroup = document.createElement("div");
+bensGroup.className = "field-group";
+const bensLabel = document.createElement("label");
+bensLabel.textContent = "Deixou bens?: ";
+const bensSelect = document.createElement("select");
+bensSelect.className = "parte-deixou-bens";
+["sim", "não"].forEach(opt => {
+  const o = document.createElement("option");
+  o.value = opt;
+  o.textContent = opt.charAt(0).toUpperCase() + opt.slice(1);
+  bensSelect.appendChild(o);
+});
+bensSelect.value = (parte.deixou_bens || "não").toLowerCase();
+bensGroup.appendChild(bensLabel);
+bensGroup.appendChild(bensSelect);
+
+// Número de herdeiros
+const numHerdeirosGroup = document.createElement("div");
+numHerdeirosGroup.className = "field-group";
+const numHLabel = document.createElement("label");
+numHLabel.textContent = "Número de herdeiros: ";
+const numHInput = document.createElement("input");
+numHInput.type = "text";
+numHInput.maxLength = 2;
+numHInput.pattern = "\\d*";
+numHInput.className = "parte-num-herdeiros";
+numHerdeirosGroup.appendChild(numHLabel);
+numHerdeirosGroup.appendChild(numHInput);
+
+// Colocar os dois dentro da linha
+herdeirosRow.appendChild(bensGroup);
+herdeirosRow.appendChild(numHerdeirosGroup);
+
+additionalContainer.appendChild(herdeirosRow);
+
 
           const herdeirosContainer = document.createElement("div");
           herdeirosContainer.id = "herdeiros-container";
